@@ -1,4 +1,4 @@
-def MainValidation(candidate, result=False):
+def MainValidation(candidate, result=0):
 
     if "." in candidate:
         if candidate.replace('.', '', 1).isdigit():
