@@ -98,13 +98,16 @@ def MainGui():
             window["-Text1-"].update(totalCost)
             window["-Text2-"].update(salesCost)
 
-            #layout = 1 if layout == 2 else 2
+            if layout == 1:
+                for element in range(1,9):
+                    window[f"-INaccess{element}{1 if layout == 2 else 2}-"].update(values[f"-INaccess{element}{2 if layout == 2 else 1}-"])
             layout = 2
-            for element in range(1,9):
-                window[f"-INaccess{element}{2 if layout == 2 else 1}-"].update(values[f"-INaccess{element}{1 if layout == 2 else 2}-"])
             window[f'-COL{layout}-'].update(visible=True)
 
         elif event == sg.WIN_CLOSED or event == f'-Quit{layout}-':
             break
 
     window.close()
+
+
+
