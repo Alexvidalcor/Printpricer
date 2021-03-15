@@ -1,11 +1,11 @@
 
-# GCode_CostEstimator
+# GCode CostEstimator
 
 _Programa que permite calcular costes típicos y precio de venta de un archivo Gcode impreso en 3D_
 
 Ventana inicial         |  Ventana con costes calculados
 :-------------------------:|:-------------------------:
-![Initial_Window]()  |  ![Ending_Window]()
+![Initial_Window](https://github.com/Alexvidalcor/GCode_CostEstimator/blob/main/Input/ReadmeImage_1.png?raw=true)  |  ![Ending_Window](https://github.com/Alexvidalcor/GCode_CostEstimator/blob/main/Input/ReadmeImage_2.png?raw=true)
 
 
 ## Estado del proyecto ⚙️
@@ -17,14 +17,16 @@ Precios de venta  |  OK
 Histórico de estimaciones  |  En desarrollo
 
 
-## Ejecución en Windows 🚀
+## Ejecución del programa 🚀
 
-_Para Windows_
+### Windows 
+
+_Descargar y ejecutar_
 
 Ver  apartado **Releases** para descargar el último ejecutable.
 
 
-### Ejecución en Distribución de Linux basado en Debian 📋
+### Distribución de Linux basado en Debian 
 
 _Pasos a seguir (comandos de terminal):_
 
