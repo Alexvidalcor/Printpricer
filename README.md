@@ -1,5 +1,5 @@
 
-# GCode_CostEstimator
+# GCode CostEstimator
 
 _Programa que permite calcular costes típicos y precio de venta de un archivo Gcode impreso en 3D_
 
