@@ -1,6 +1,6 @@
 import PySimpleGUI as sg
 from src.calc import FilamentCost, KwCost
-from src.handler import MainValidation
+from src.handler import MainValidation, TimeValidation
 
 sg.SetOptions(element_padding=((40, 0), (10, 10)))
 
@@ -25,7 +25,7 @@ def MainGui():
         (10, 0), (10, 0)), size=(50, 2), font=commonParams[2])],
         [sg.Text('· Precio Kw/hora', size=commonParams[0]),
          sg.Input(key='-INaccess11-', size=commonParams[1], enable_events=True)],
-        [sg.Text('· Horas de impresión', size=commonParams[0]),
+        [sg.Text('· Tiempo de impresión (H:M)', size=commonParams[0]),
          sg.Input(key='-INaccess21-', size=commonParams[1], enable_events=True)],
         [sg.Text('· Coste de bobina', size=commonParams[0]),
          sg.Input(key='-INaccess31-', size=commonParams[1], enable_events=True)],
@@ -50,7 +50,7 @@ def MainGui():
         (10, 0), (10, 0)), size=(50, 2), font=(commonParams[2]))],
         [sg.Text('· Precio Kw/hora', size=commonParams[0]),
          sg.Input(key='-INaccess12-', size=commonParams[1], enable_events=True)],
-        [sg.Text('· Horas de impresión', size=commonParams[0]),
+        [sg.Text('· Tiempo de impresión (H:M)', size=commonParams[0]),
          sg.Input(key='-INaccess22-', size=commonParams[1], enable_events=True)],
         [sg.Text('· Coste de bobina', size=commonParams[0]),
          sg.Input(key='-INaccess32-', size=commonParams[1], enable_events=True)],
@@ -109,7 +109,7 @@ def MainGui():
             ivaTax = MainValidation(
                 values[f"-INaccess8{layout}-"])/100 if values[f"-INaccess8{layout}-"] else 0
             electricityCost = KwCost(MainValidation(
-                values[f"-INaccess1{layout}-"]), MainValidation(values[f"-INaccess2{layout}-"]))
+                values[f"-INaccess1{layout}-"]), TimeValidation(values[f"-INaccess2{layout}-"]))
             materialCost = FilamentCost(MainValidation(values[f"-INaccess3{layout}-"]), MainValidation(
                 values[f"-INaccess4{layout}-"]), MainValidation(values[f"-INaccess5{layout}-"]))
             designCost = MainValidation(values[f"-INaccess6{layout}-"])
