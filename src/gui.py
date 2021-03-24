@@ -12,6 +12,9 @@ def Collapse(layout, key, visible):
 def Reset(window, layout):
     for element in range(1, 9):
         window[f"-INaccess{element}{2 if layout == 2 else 1}-"].update("")
+    if layout ==2:
+        window[f"-Text1-"].update("El coste total es 0 €")
+        window[f"-Text2-"].update("El precio de venta es 0 €")
 
 def MainGui():
 

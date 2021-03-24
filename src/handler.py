@@ -13,7 +13,7 @@ def MainValidation(candidate, result=0):
 def TimeValidation(candidate, result="00:00"):
     if re.match(r"[0-9]{1,3}:[0-5]{1}[0-9]{1}", candidate):
         result = candidate
-    if ":" not in candidate:
+    elif ":" not in candidate:
         result = MainValidation(candidate)
         sg.popup_no_buttons("Por favor, introduzca el tiempo según el formato 'Horas:Minutos'.\n\nPara este caso, se ha convertido la cifra introducida a minutos",
         title="Atención",
