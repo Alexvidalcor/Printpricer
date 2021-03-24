@@ -10,11 +10,11 @@ def FilamentCost(SpoolCost, SpoolWeight, SpoolConsumed):
 	
 def KwCost(kwExpense, timePrinting):
 
-	print(timePrinting)
-
-	hours = re.split(r"[0-9]{1,3}:", timePrinting)
-	minutes = re.split(r":[0-9]{1,2}", timePrinting)
-
-	print(hours, minutes)
-
-	return 0
+	if type(timePrinting) == str:
+		hours = int(re.split(r":[0-5]{1}[0-9]{1}", timePrinting)[0])
+		minutes = int(re.split(r"[0-9]{1,3}:", timePrinting)[1])
+		totalCost = ((hours*60)+minutes)/60
+	else:
+		totalCost = timePrinting/60
+	
+	return totalCost * kwExpense
