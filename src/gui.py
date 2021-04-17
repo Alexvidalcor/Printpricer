@@ -1,4 +1,6 @@
 import PySimpleGUI as sg
+import matplotlib.pyplot as plt
+
 from src.calc import FilamentCost, KwCost
 from src.handler import MainValidation, TimeValidation
 
@@ -143,3 +145,32 @@ def MainGui():
             break
 
     window.close()
+    
+    
+    
+
+# def draw_plot():
+#     plt.plot([0.1, 0.2, 0.5, 0.7])
+#     plt.show(block=False)
+# 
+#     layout = [[sg.Button('Plot'), sg.Cancel(), sg.Button('Popup')]]
+# 
+#     window = sg.Window('Have some Matplotlib....', layout)
+# 
+#     while True:
+#         event, values = window.read()
+#         if event in (sg.WIN_CLOSED, 'Cancel'):
+#             break
+#         elif event == 'Plot':
+#             draw_plot()
+#         elif event == 'Popup':
+#             sg.popup('Yes, your application is still running')
+#     window.close()    
+#     
+#     
+#     
+# 
+# def GuiDatabase():
+#     
+#     layout1 = [[[[sg.Text('Histórico de estimaciones:', pad=(
+#         (10, 0), (10, 0)), size=(50, 2), font=commonParams[2])]]]]
