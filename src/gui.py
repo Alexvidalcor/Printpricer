@@ -1,6 +1,7 @@
 import PySimpleGUI as sg
 from src.calc import FilamentCost, KwCost
 from src.handler import MainValidation, TimeValidation
+from src.popups import PopupOptions
 
 sg.SetOptions(element_padding=((40, 0), (10, 10)))
 
@@ -29,12 +30,8 @@ def MainGui():
     layout1 = [[sg.Menu(menu_def, tearoff=True)],
     	[sg.Text('Introduce los siguientes datos para recibir la estimación:', pad=(
         (10, 0), (10, 0)), size=(50, 2), font=commonParams[2])],
-        [sg.Text('· Precio Kw/hora', size=commonParams[0]),
-         sg.Input(key='-INaccess11-', size=commonParams[1], enable_events=True)],
         [sg.Text('· Tiempo de impresión (H:M)', size=commonParams[0]),
          sg.Input(key='-INaccess21-', size=commonParams[1], enable_events=True)],
-        [sg.Text('· Gramos de material consumido', size=commonParams[0]),
-         sg.Input(key='-INaccess51-', size=commonParams[1], enable_events=True)],
         [sg.Text('· Coste de diseño (Opcional)', size=commonParams[0]),
          sg.Input(key='-INaccess61-', size=commonParams[1], enable_events=True)],
         [sg.Checkbox('Activar Opciones de Venta', enable_events=True,
@@ -51,13 +48,8 @@ def MainGui():
     layout2 = [[sg.Menu(menu_def, tearoff=True)],
     	[sg.Text('Introduce los siguientes datos para recibir la estimación:', pad=(
         (10, 0), (10, 0)), size=(50, 2), font=(commonParams[2]))],
-        [sg.Text('· Precio Kw/hora', size=commonParams[0]),
-         sg.Input(key='-INaccess12-', size=commonParams[1], enable_events=True)],
         [sg.Text('· Tiempo de impresión (H:M)', size=commonParams[0]),
          sg.Input(key='-INaccess22-', size=commonParams[1], enable_events=True)],
-        
-        [sg.Text('· Gramos de material consumido', size=commonParams[0]),
-         sg.Input(key='-INaccess52-', size=commonParams[1], enable_events=True)],
         [sg.Text('· Coste de diseño (Opcional)', size=commonParams[0]),
          sg.Input(key='-INaccess62-', size=commonParams[1], enable_events=True)],
         [sg.Checkbox('Activar Opciones de Venta',
@@ -141,7 +133,7 @@ def MainGui():
                 
                 
         elif event == "Opciones":
-        	print("OK")
+        	PopupOptions()
         
 
         if event == sg.WIN_CLOSED:
