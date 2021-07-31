@@ -1,7 +1,8 @@
 .venv/
 .vscode/
-src/__pycache__/*.pyc
-test.ipynb
+*.pyc
+__pycache__/
+*.ipynb
 test.py
 WindowsRelease.py
-
+database/
