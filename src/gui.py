@@ -11,7 +11,6 @@ menu_def = [['Archivo', ['Salir']],['Ajustes', ['Opciones']],['Ayuda', ['Acerca 
 def Collapse(layout, key, visible):
     return sg.pin(sg.Column(layout, key=key, visible=visible))
 
-
 def Reset(window, layout):
     for element in range(1, 9):
         window[f"-INaccess{element}{2 if layout == 2 else 1}-"].update("")
@@ -34,15 +33,17 @@ def MainGui():
          sg.Input(key='-INaccess21-', size=commonParams[1], enable_events=True)],
         [sg.Text('· Coste de diseño (Opcional)', size=commonParams[0]),
          sg.Input(key='-INaccess61-', size=commonParams[1], enable_events=True)],
+        [sg.Text("")],
         [sg.Checkbox('Activar Opciones de Venta', enable_events=True,
                      key='-CHbox1-', font=commonParams[2])],
         [Collapse(
             [[sg.Text("· Margen de Venta (%)", size=commonParams[3]), sg.Input(key='-INaccess71-', size=commonParams[1], 			enable_events=True)],
              [sg.Text("· Porcentaje de IVA (%)", size=commonParams[3]), sg.Input(key='-INaccess81-', disabled=True, 			size=commonParams[1], enable_events=True),
               sg.Help("Ayuda", tooltip="Margen de ventas debe ser 0 o superior", key="-Help1-", pad=((5, 0), (0, 0)), 			button_color=("blue"))]], '-Token1-', False)],
-        [sg.HorizontalSeparator(pad=((0, 40), (0, 0)))],
-        [sg.Button("Calcular", font=commonParams[2], key="-INsubmit1-", auto_size_button=True, pad=((115, 10),
-                                                                                                    (25, 20))), sg.Button("Reiniciar", key="-Reset1-", font=commonParams[2], pad=((0, 0), (25, 20)))],
+        [sg.HorizontalSeparator(pad=((0, 0), (0, 0)))],
+        [sg.Text("")],
+        [sg.Column([[sg.Button("Calcular", font=commonParams[2], key="-INsubmit1-", auto_size_button=True, pad=((0, 0),(0,0))), 		     sg.Button("Reiniciar", key="-Reset2-", font=commonParams[2], pad=((10, 80), (0, 0)))]],
+                     justification ="center")],
     ]
 
     layout2 = [[sg.Menu(menu_def, tearoff=True)],
@@ -52,6 +53,7 @@ def MainGui():
          sg.Input(key='-INaccess22-', size=commonParams[1], enable_events=True)],
         [sg.Text('· Coste de diseño (Opcional)', size=commonParams[0]),
          sg.Input(key='-INaccess62-', size=commonParams[1], enable_events=True)],
+        [sg.Text("")],
         [sg.Checkbox('Activar Opciones de Venta',
                      enable_events=True, key='-CHbox2-', font=commonParams[2])],
         [Collapse(
@@ -63,8 +65,10 @@ def MainGui():
                  font=commonParams[2], justification="center")],
         [sg.Text(f"El precio de venta es 0 €", key="-Text2-",
                  size=commonParams[4], font=commonParams[2], justification="center")],
-        [sg.Button("Calcular", font=commonParams[2], key="-INsubmit2-", auto_size_button=True, pad=((115, 10),
-                                                                                                    (25, 20))), sg.Button("Reiniciar", key="-Reset2-", font=commonParams[2], pad=((0, 0), (25, 20)))],
+        [sg.Text("")],
+        [sg.Column([[sg.Button("Calcular", font=commonParams[2], key="-INsubmit2-", auto_size_button=True, pad=((0, 0),(0,0))), 
+                     sg.Button("Reiniciar", key="-Reset2-", font=commonParams[2], pad=((10, 80), (0, 0)))]],
+                     justification ="center")],
     ]
 
     layoutMain = [[sg.Column(layout1, key='-COL1-'),
@@ -131,11 +135,9 @@ def MainGui():
                 window[f'-COL{layout}-'].update(visible=True)
                 checkSaved = True
                 
-                
         elif event == "Opciones":
         	PopupOptions()
         
-
         if event == sg.WIN_CLOSED:
             break
 
