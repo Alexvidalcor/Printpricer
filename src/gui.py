@@ -1,12 +1,21 @@
 import PySimpleGUI as sg
+from os.path import exists
+
 from src.calc import FilamentCost, KwCost
 from src.handler import MainValidation, TimeValidation
 from src.popups import PopupOptions
+from src.db import CreateCon, SqlConnection, GetThings, PrepareCon
 
 sg.SetOptions(element_padding=((40, 0), (10, 10)))
 
 
 menu_def = [['Archivo', ['Salir']],['Ajustes', ['Opciones']],['Ayuda', ['Acerca de...']]]
+commonParams = [(30, 1), (10, 1), ("Helvetica", 12), (20, 1), (38, 1)]
+electricityCost = 0
+materialCost = 0
+ivaTax = 0
+marginSales = 0
+
 
 def Collapse(layout, key, visible):
     return sg.pin(sg.Column(layout, key=key, visible=visible))
@@ -17,18 +26,30 @@ def Reset(window, layout):
     if layout ==2:
         window[f"-Text1-"].update("El coste total es 0 €")
         window[f"-Text2-"].update("El precio de venta es 0 €")
+        
+def IntroDB():
+	if exists("db/MainPrinter.db"):
+		print("Database existe")
+		con, cur = SqlConnection("db/MainPrinter.db")
+		return con, cur
+	else:
+		print("Database no existe")
+		CreateCon("db/MainPrinter.db")
+		con, cur = SqlConnection("db/MainPrinter.db")
+		PrepareCon(con, cur, option="insert",
+			values=("ImpresoraTest",0,0,0,0,0,0))
+		return con, cur
 
 def MainGui():
 
-    electricityCost = 0
-    materialCost = 0
-    ivaTax = 0
-    marginSales = 0
-    commonParams = [(30, 1), (10, 1), ("Helvetica", 12), (20, 1), (38, 1)]
-
+    con, cur = IntroDB()
+    
     layout1 = [[sg.Menu(menu_def, tearoff=True)],
     	[sg.Text('Introduce los siguientes datos para recibir la estimación:', pad=(
         (10, 0), (10, 0)), size=(50, 2), font=commonParams[2])],
+        [sg.Text("· Elige tu impresora", size = commonParams[0]),
+		sg.Combo(values=[element[0] for element in GetThings(cur)], key="-CHOSPRINTER-",  
+				size = commonParams[1], change_submits=True)],
         [sg.Text('· Tiempo de impresión (H:M)', size=commonParams[0]),
          sg.Input(key='-INaccess21-', size=commonParams[1], enable_events=True)],
         [sg.Text('· Coste de diseño (Opcional)', size=commonParams[0]),
@@ -136,9 +157,9 @@ def MainGui():
                 checkSaved = True
                 
         elif event == "Opciones":
-        	PopupOptions()
+        	PopupOptions(con, cur)
         
-        if event == sg.WIN_CLOSED:
+        if event == sg.WIN_CLOSED or event =="Salir":
             break
 
     window.close()

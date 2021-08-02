@@ -18,3 +18,5 @@ def KwCost(kwExpense, timePrinting):
 		totalCost = timePrinting/60
 	
 	return totalCost * kwExpense
+	
+def AmortCost
