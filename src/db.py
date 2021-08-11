@@ -93,6 +93,7 @@ def GetThings(cur, where=[], selection="PrinterName"):
         	cur.execute(f"SELECT {selection} FROM MainPrinter WHERE {where[0]} = '{where[1]}'")
         
 	thingExtract = cur.fetchall()
+	print(thingExtract)
 	return thingExtract
         
     

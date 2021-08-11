@@ -1,7 +1,7 @@
 import PySimpleGUI as sg
 from os.path import exists
 
-from src.calc import FilamentCost, KwCost
+from src.calc import FilamentCost, KwCost, ManageSales, AmortCost
 from src.handler import MainValidation, TimeValidation
 from src.popups import PopupOptions
 from src.db import CreateCon, SqlConnection, GetThings, PrepareCon
@@ -48,38 +48,45 @@ def MainGui():
     	[sg.Text('Introduce los siguientes datos para recibir la estimación:', pad=(
         (10, 0), (10, 0)), size=(50, 2), font=commonParams[2])],
         [sg.Text("· Elige tu impresora", size = commonParams[0]),
-		sg.Combo(values=[element[0] for element in GetThings(cur)], key="-CHOSPRINTER-",  
+		sg.Combo(values=[element[0] for element in GetThings(cur)], key="-CHOSPRINTER1-",  
 				size = commonParams[1], change_submits=True)],
         [sg.Text('· Tiempo de impresión (H:M)', size=commonParams[0]),
+         sg.Input(key='-INaccess11-', size=commonParams[1], enable_events=True)],
+        [sg.Text('· Material Consumido', size=commonParams[0]),
          sg.Input(key='-INaccess21-', size=commonParams[1], enable_events=True)],
         [sg.Text('· Coste de diseño (Opcional)', size=commonParams[0]),
-         sg.Input(key='-INaccess61-', size=commonParams[1], enable_events=True)],
+         sg.Input(key='-INaccess31-', size=commonParams[1], enable_events=True)],
         [sg.Text("")],
         [sg.Checkbox('Activar Opciones de Venta', enable_events=True,
                      key='-CHbox1-', font=commonParams[2])],
         [Collapse(
-            [[sg.Text("· Margen de Venta (%)", size=commonParams[3]), sg.Input(key='-INaccess71-', size=commonParams[1], 			enable_events=True)],
-             [sg.Text("· Porcentaje de IVA (%)", size=commonParams[3]), sg.Input(key='-INaccess81-', disabled=True, 			size=commonParams[1], enable_events=True),
+            [[sg.Text("· Margen de Venta (%)", size=commonParams[3]), sg.Input(key='-INaccess41-', size=commonParams[1], 			enable_events=True)],
+             [sg.Text("· Porcentaje de IVA (%)", size=commonParams[3]), sg.Input(key='-INaccess51-', disabled=True, 			size=commonParams[1], enable_events=True),
               sg.Help("Ayuda", tooltip="Margen de ventas debe ser 0 o superior", key="-Help1-", pad=((5, 0), (0, 0)), 			button_color=("blue"))]], '-Token1-', False)],
         [sg.HorizontalSeparator(pad=((0, 0), (0, 0)))],
         [sg.Text("")],
-        [sg.Column([[sg.Button("Calcular", font=commonParams[2], key="-INsubmit1-", auto_size_button=True, pad=((0, 0),(0,0))), 		     sg.Button("Reiniciar", key="-Reset2-", font=commonParams[2], pad=((10, 80), (0, 0)))]],
+        [sg.Column([[sg.Button("Calcular", font=commonParams[2], key="-INsubmit1-", auto_size_button=True, pad=((0, 0),(0,0))), 		     sg.Button("Reiniciar", key="-Reset1-", font=commonParams[2], pad=((10, 80), (0, 0)))]],
                      justification ="center")],
     ]
 
     layout2 = [[sg.Menu(menu_def, tearoff=True)],
     	[sg.Text('Introduce los siguientes datos para recibir la estimación:', pad=(
         (10, 0), (10, 0)), size=(50, 2), font=(commonParams[2]))],
+        [sg.Text("· Elige tu impresora", size = commonParams[0]),
+		sg.Combo(values=[element[0] for element in GetThings(cur)], key="-CHOSPRINTER2-",  
+				size = commonParams[1], change_submits=True)],
         [sg.Text('· Tiempo de impresión (H:M)', size=commonParams[0]),
+         sg.Input(key='-INaccess12-', size=commonParams[1], enable_events=True)],
+        [sg.Text('· Material Consumido', size=commonParams[0]),
          sg.Input(key='-INaccess22-', size=commonParams[1], enable_events=True)],
         [sg.Text('· Coste de diseño (Opcional)', size=commonParams[0]),
-         sg.Input(key='-INaccess62-', size=commonParams[1], enable_events=True)],
+         sg.Input(key='-INaccess32-', size=commonParams[1], enable_events=True)],
         [sg.Text("")],
         [sg.Checkbox('Activar Opciones de Venta',
                      enable_events=True, key='-CHbox2-', font=commonParams[2])],
         [Collapse(
-            [[sg.Text("· Margen de Venta (%)", size=commonParams[3]), sg.Input(key='-INaccess72-', size=commonParams[1], enable_events=True)],
-             [sg.Text("· Porcentaje de IVA (%)", size=commonParams[3]), sg.Input(key='-INaccess82-', size=commonParams[1], enable_events=True),
+            [[sg.Text("· Margen de Venta (%)", size=commonParams[3]), sg.Input(key='-INaccess42-', size=commonParams[1], enable_events=True)],
+             [sg.Text("· Porcentaje de IVA (%)", size=commonParams[3]), sg.Input(key='-INaccess52-', size=commonParams[1], enable_events=True),
               sg.Help("Ayuda", tooltip="Margen de ventas debe ser 0 o superior", key="-Help2-", pad=((5, 0), (0, 0)), button_color=("blue"))]], '-Token2-', False)],
         [sg.HorizontalSeparator(pad=((0, 40), (0, 0)))],
         [sg.Text("El coste total es 0 €", key="-Text1-", size=commonParams[4],
@@ -114,28 +121,35 @@ def MainGui():
         if event == f"-Reset{layout}-":
             Reset(window, layout)
 
-        if values[f"-INaccess7{layout}-"] == "":
-            window[f"-INaccess8{layout}-"].update("", disabled=True)
+        if values[f"-INaccess4{layout}-"] == "":
+            window[f"-INaccess5{layout}-"].update("", disabled=True)
         else:
-            window[f"-INaccess8{layout}-"].update(disabled=False)
+            window[f"-INaccess5{layout}-"].update(disabled=False)
 
         if event == f"-INsubmit{layout}-":
 
-            marginSales = MainValidation(
-                values[f"-INaccess7{layout}-"])/100 if values[f"-INaccess7{layout}-"] else 0
-            ivaTax = MainValidation(
-                values[f"-INaccess8{layout}-"])/100 if values[f"-INaccess8{layout}-"] else 0
-            electricityCost = KwCost(MainValidation(
-                values[f"-INaccess1{layout}-"]), TimeValidation(values[f"-INaccess2{layout}-"]))
-            materialCost = FilamentCost(MainValidation(values[f"-INaccess3{layout}-"]), MainValidation(
-                values[f"-INaccess4{layout}-"]), MainValidation(values[f"-INaccess5{layout}-"]))
-            designCost = MainValidation(values[f"-INaccess6{layout}-"])
+	    #REFACTORIZAR INTRODUCCIONES A CALC
+	    
+            marginSales = ManageSales(MainValidation(values[f"-INaccess4{layout}-"]))
+            ivaTax = ManageSales(MainValidation(values[f"-INaccess5{layout}-"]))
+            print(GetThings(cur,selection="KWprize", where=["PrinterName", values["-CHOSPRINTER-"]])[0][0])
+            electricityCost = KwCost(
+            				MainValidation(GetThings(cur,selection="KWprize", where=["PrinterName", values["-CHOSPRINTER-"]])[0][0]),
+            				 MainValidation(values[f"-INaccess1{layout}-"]))
+            materialCost = FilamentCost(
+            				MainValidation(GetThings(cur,selection="SpoolCost", where=["PrinterName",values["-CHOSPRINTER-"]])[0][0]),
+            				MainValidation(GetThings(cur,selection="SpoolWeight", where=["PrinterName",values["-CHOSPRINTER-"]])[0][0]),
+            				MainValidation(values[f"-INaccess2{layout}-"]))
+            amortCost = AmortCost(
+            				MainValidation(GetThings(cur,selection="PrinterCost", where=["PrinterName",values["-CHOSPRINTER-"]])[0][0]),
+            				MainValidation(GetThings(cur,selection="AmortPrinter", where=["PrinterName",values["-CHOSPRINTER-"]])[0][0]))
+            designCost = MainValidation(values[f"-INaccess3{layout}-"])
 
-            totalCost = f"El coste total es {round(electricityCost+materialCost+designCost,2)} €"
+            totalCost = f"El coste total es {round(electricityCost+materialCost+amortCost+designCost,2)} €"
             if marginSales != 0:
-                salesCost = f"El precio de venta es {round((((electricityCost+materialCost+designCost)*(marginSales+1))*(ivaTax+1)),2)} €"
+                salesCost = f"El precio de venta es {round((((electricityCost+materialCost+amortCost+designCost)* 					(marginSales))*(ivaTax)),2)} €"
             elif marginSales == 0:
-                salesCost = f"El precio de venta (sólo IVA) es {round((electricityCost+materialCost+designCost)*(ivaTax+1),2)} €"
+                salesCost = f"El precio de venta (sólo IVA) es {round((electricityCost+materialCost+amortCost+designCost)*(ivaTax),2)} €"
             window["-Text1-"].update(totalCost)
             window["-Text2-"].update(salesCost)
 
@@ -149,7 +163,7 @@ def MainGui():
                     window[f'-CHbox{layout}-'].update(value=True)
                     window[f'-Token{layout}-'].update(visible=opened)
 
-                for element in range(1, 9):
+                for element in range(1, 5):
                     window[f"-INaccess{element}{2 if layout == 2 else 1}-"].update(
                         values[f"-INaccess{element}{1 if layout == 2 else 2}-"])
 

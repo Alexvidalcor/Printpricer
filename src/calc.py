@@ -19,4 +19,9 @@ def KwCost(kwExpense, timePrinting):
 	
 	return totalCost * kwExpense
 	
-def AmortCost
+def ManageSales(numberSales):
+	return (numberSales/100 if numberSales else 0)+1
+
+def AmortCost(PrinterCost, Years):
+	return 0
+	

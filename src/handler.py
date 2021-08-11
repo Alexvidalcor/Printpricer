@@ -2,6 +2,8 @@ import re
 import PySimpleGUI as sg
 
 def MainValidation(candidate, result=0):
+    if type(candidate) != str:
+    	candidate = str(candidate)
     if "." in candidate or "," in candidate:
         if candidate.replace('.', '', 1).isdigit():
             result = float(candidate)

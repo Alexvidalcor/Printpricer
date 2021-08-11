@@ -35,7 +35,7 @@ def PopupOptions(con, cur):
 		[sg.Column([[sg.Text("Introduce los datos de tu impresora 3D", justification="center", font= ("Helvetica", 12))]],
 			justification = "center")],
 		[sg.Text("Elige tu impresora", size = commonParams[1], font = commonParams[0]),
-			sg.Combo(values=[element[0] for element in GetThings(cur)], key="-CHOSPRINTER-",  
+			sg.Combo(values=[element[0] for element in GetThings(cur)], key="-CHOSPRINTERPOP-",  
 				size = commonParams[1], change_submits=True)],
 		[sg.Text("", size = commonParams[1], font= commonParams[0])],
 		[sg.Text('· Precio KW hora', size = commonParams[1], font = commonParams[0]),
@@ -89,7 +89,7 @@ def PopupOptions(con, cur):
 			valSpoolcost = MainValidation(values["-SPOOLCOST-"])
 			valSpoolweight = MainValidation(values["-SPOOLWEIGHT-"])
 			PrepareCon(con, cur, option="update", 
-				where = ["PrinterName", values["-CHOSPRINTER-"]],
+				where = ["PrinterName", values["-CHOSPRINTERPOP-"]],
 				values=(valKWprize,valKWprinter,valCostprinter,valAmortprinter,valSpoolcost,valSpoolweight))
 			window.Element("-KWPRIZE-").update(valKWprize)
 			window.Element("-KWPRINTER-").update(valKWprinter)
@@ -99,9 +99,9 @@ def PopupOptions(con, cur):
 			window.Element("-SPOOLWEIGHT-").update(valSpoolweight)
 			
 		if event == "Refrescar":
-			window.Element("-CHOSPRINTER-").update(values=[element[0] for element in GetThings(cur)])
-		if event == "-CHOSPRINTER-":
-			updaterValues = GetThings(cur, selection="*",where=["PrinterName", values["-CHOSPRINTER-"]])[0]
+			window.Element("-CHOSPRINTERPOP-").update(values=[element[0] for element in GetThings(cur)])
+		if event == "-CHOSPRINTERPOP-":
+			updaterValues = GetThings(cur, selection="*",where=["PrinterName", values["-CHOSPRINTERPOP-"]])[0]
 			window.Element("-KWPRIZE-").update(updaterValues[2])
 			window.Element("-KWPRINTER-").update(updaterValues[3])
 			window.Element("-COSTPRINTER-").update(updaterValues[4])
@@ -112,10 +112,10 @@ def PopupOptions(con, cur):
 		if event == "Añadir":
 			newPrinter = sg.popup_get_text("Introduce el nombre de tu impresora")
 			PrepareCon(con, cur, values=(newPrinter,0,0,0,0,0,0), option="add")
-			window.Element("-CHOSPRINTER-").update(values=[element[0] for element in GetThings(cur)])
+			window.Element("-CHOSPRINTERPOP-").update(values=[element[0] for element in GetThings(cur)])
 		elif event == "Eliminar":
 			PopupDelete(con, cur)
-			window.Element("-CHOSPRINTER-").update(values=[element[0] for element in GetThings(cur)])
+			window.Element("-CHOSPRINTERPOP-").update(values=[element[0] for element in GetThings(cur)])
 			
 
 		if event == sg.WIN_CLOSED or event =="Salir":
