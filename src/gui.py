@@ -16,6 +16,8 @@ materialCost = 0
 ivaTax = 0
 marginSales = 0
 
+def RefactorSupport(cur, printer, selected):
+    return MainValidation(GetThings(cur,selection=selected, where=["PrinterName", printer]])[0][0])
 
 def Collapse(layout, key, visible):
     return sg.pin(sg.Column(layout, key=key, visible=visible))
@@ -132,17 +134,17 @@ def MainGui():
 	    
             marginSales = ManageSales(MainValidation(values[f"-INaccess4{layout}-"]))
             ivaTax = ManageSales(MainValidation(values[f"-INaccess5{layout}-"]))
-            print(GetThings(cur,selection="KWprize", where=["PrinterName", values["-CHOSPRINTER-"]])[0][0])
-            electricityCost = KwCost(
-            				MainValidation(GetThings(cur,selection="KWprize", where=["PrinterName", values["-CHOSPRINTER-"]])[0][0]),
-            				 MainValidation(values[f"-INaccess1{layout}-"]))
-            materialCost = FilamentCost(
-            				MainValidation(GetThings(cur,selection="SpoolCost", where=["PrinterName",values["-CHOSPRINTER-"]])[0][0]),
-            				MainValidation(GetThings(cur,selection="SpoolWeight", where=["PrinterName",values["-CHOSPRINTER-"]])[0][0]),
+
+            electricityCost = KwCost(RefactorSupport(cur, values["-CHOSPRINTER-"],"KWprize"),
+            				MainValidation(values[f"-INaccess1{layout}-"]))
+            				
+            materialCost = FilamentCost(RefactorSupport(cur,values["-CHOSPRINTER-"],"SpoolCost"), 
+            				RefactorSupport(cur,values["-CHOSPRINTER-"],"SpoolWeight"),
             				MainValidation(values[f"-INaccess2{layout}-"]))
-            amortCost = AmortCost(
-            				MainValidation(GetThings(cur,selection="PrinterCost", where=["PrinterName",values["-CHOSPRINTER-"]])[0][0]),
-            				MainValidation(GetThings(cur,selection="AmortPrinter", where=["PrinterName",values["-CHOSPRINTER-"]])[0][0]))
+            				
+            amortCost = AmortCost(RefactorSupport(cur,values["-CHOSPRINTER-"],"PrinterCost"), 
+            				RefactorSupport(cur,values["-CHOSPRINTER-"],"AmortPrinter"))
+            				
             designCost = MainValidation(values[f"-INaccess3{layout}-"])
 
             totalCost = f"El coste total es {round(electricityCost+materialCost+amortCost+designCost,2)} €"
