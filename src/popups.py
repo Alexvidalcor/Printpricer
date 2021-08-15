@@ -7,7 +7,7 @@ from src.handler import MainValidation
 menu_def = [['Archivo', ['Salir']],['Editar', ['Añadir', 'Eliminar', 'Refrescar']]]
 commonParams = [("Helvetica", 10), (18, 1), "#ffff80", (2,1), ("Helvetica", 15),(15,1)]
 	
-def PopupDelete():
+def PopupDelete(con, cur):
 	layout = [
 		[sg.Text("Selecciona la impresora a eliminar:")],
 		[sg.Combo(values=[element[0] for element in GetThings(cur)], key="-CHOSPRINTDEL-",  

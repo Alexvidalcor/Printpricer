@@ -17,13 +17,14 @@ ivaTax = 0
 marginSales = 0
 
 def RefactorSupport(cur, printer, selected):
-    return MainValidation(GetThings(cur,selection=selected, where=["PrinterName", printer]])[0][0])
+    return MainValidation(GetThings(cur,selection=selected, where=["PrinterName", printer])[0][0])
 
 def Collapse(layout, key, visible):
     return sg.pin(sg.Column(layout, key=key, visible=visible))
 
 def Reset(window, layout):
-    for element in range(1, 9):
+    window[f"-CHOSPRINTER{2 if layout == 2 else 1}-"].update("")
+    for element in range(1, 5):
         window[f"-INaccess{element}{2 if layout == 2 else 1}-"].update("")
     if layout ==2:
         window[f"-Text1-"].update("El coste total es 0 €")
@@ -122,38 +123,51 @@ def MainGui():
 
         if event == f"-Reset{layout}-":
             Reset(window, layout)
-
-        if values[f"-INaccess4{layout}-"] == "":
-            window[f"-INaccess5{layout}-"].update("", disabled=True)
-        else:
-            window[f"-INaccess5{layout}-"].update(disabled=False)
+            
+        try:
+            if values[f"-INaccess4{layout}-"] == "":
+                window[f"-INaccess5{layout}-"].update("", disabled=True)
+            else:
+                window[f"-INaccess5{layout}-"].update(disabled=False)
+        except TypeError:
+            break
+		
+	
 
         if event == f"-INsubmit{layout}-":
 
-	    #REFACTORIZAR INTRODUCCIONES A CALC
-	    
+ 
             marginSales = ManageSales(MainValidation(values[f"-INaccess4{layout}-"]))
+            
             ivaTax = ManageSales(MainValidation(values[f"-INaccess5{layout}-"]))
 
-            electricityCost = KwCost(RefactorSupport(cur, values["-CHOSPRINTER-"],"KWprize"),
-            				MainValidation(values[f"-INaccess1{layout}-"]))
+
+            electricityCost = KwCost(RefactorSupport(cur, values[f"-CHOSPRINTER{layout}-"],"KWprinter"),
+            			RefactorSupport(cur, values[f"-CHOSPRINTER{layout}-"],"KWprize"),
+            			TimeValidation(values[f"-INaccess1{layout}-"]))
             				
-            materialCost = FilamentCost(RefactorSupport(cur,values["-CHOSPRINTER-"],"SpoolCost"), 
-            				RefactorSupport(cur,values["-CHOSPRINTER-"],"SpoolWeight"),
+            materialCost = FilamentCost(RefactorSupport(cur,values[f"-CHOSPRINTER{layout}-"],"SpoolCost"), 
+            				RefactorSupport(cur,values[f"-CHOSPRINTER{layout}-"],"SpoolWeight"),
             				MainValidation(values[f"-INaccess2{layout}-"]))
             				
-            amortCost = AmortCost(RefactorSupport(cur,values["-CHOSPRINTER-"],"PrinterCost"), 
-            				RefactorSupport(cur,values["-CHOSPRINTER-"],"AmortPrinter"))
+            amortCost = AmortCost(RefactorSupport(cur,values[f"-CHOSPRINTER{layout}-"],"PrinterCost"), 
+            				RefactorSupport(cur,values[f"-CHOSPRINTER{layout}-"],"AmortPrinter"),
+            				TimeValidation(values[f"-INaccess1{layout}-"]))
             				
             designCost = MainValidation(values[f"-INaccess3{layout}-"])
+            
+            print(f"--------------\nCoste Electricidad:{electricityCost}\nCoste Material:{materialCost}\nCoste Diseño:{designCost}\nCoste Amortización:{amortCost}\n")
+            
+            totalCost = round(electricityCost+materialCost+amortCost+designCost,2)
+            salesCost = round((totalCost*marginSales)*ivaTax,2)
+            
+            marginCostPrint = abs(round(totalCost*(marginSales-1),2))
+            ivaCostPrint = abs(round(salesCost-totalCost-totalCost*(marginSales-1),2))
+            print(f"Margen de venta: {marginCostPrint}\nCoste IVA: {ivaCostPrint}\n--------------")
+	
 
-            totalCost = f"El coste total es {round(electricityCost+materialCost+amortCost+designCost,2)} €"
-            if marginSales != 0:
-                salesCost = f"El precio de venta es {round((((electricityCost+materialCost+amortCost+designCost)* 					(marginSales))*(ivaTax)),2)} €"
-            elif marginSales == 0:
-                salesCost = f"El precio de venta (sólo IVA) es {round((electricityCost+materialCost+amortCost+designCost)*(ivaTax),2)} €"
-            window["-Text1-"].update(totalCost)
-            window["-Text2-"].update(salesCost)
+            window["-Text1-"].update(f"El coste total es {totalCost} €")
+            window["-Text2-"].update(f"El precio de venta es {salesCost} €")
 
             if checkSaved == False:
                 window[f'-COL{layout}-'].update(visible=False)
@@ -164,6 +178,9 @@ def MainGui():
                 if opened != False:
                     window[f'-CHbox{layout}-'].update(value=True)
                     window[f'-Token{layout}-'].update(visible=opened)
+                
+                window[f"-CHOSPRINTER{2 if layout == 2 else 1}-"].update(
+                        values[f"-CHOSPRINTER{1 if layout == 2 else 2}-"])
 
                 for element in range(1, 5):
                     window[f"-INaccess{element}{2 if layout == 2 else 1}-"].update(
@@ -174,6 +191,7 @@ def MainGui():
                 
         elif event == "Opciones":
         	PopupOptions(con, cur)
+        	window.Element(f"-CHOSPRINTER{2 if layout == 2 else 1}-").update(values=[element[0] for element in GetThings(cur)])
         
         if event == sg.WIN_CLOSED or event =="Salir":
             break
