@@ -52,13 +52,17 @@ def MainGui():
         (10, 0), (10, 0)), size=(50, 2), font=commonParams[2])],
         [sg.Text("· Elige tu impresora", size = commonParams[0]),
 		sg.Combo(values=[element[0] for element in GetThings(cur)], key="-CHOSPRINTER1-",  
-				size = commonParams[1], change_submits=True)],
+				size = commonParams[1], change_submits=True),
+		sg.Button("Editar",key ="-EDITPRINTER1-")],
         [sg.Text('· Tiempo de impresión (H:M)', size=commonParams[0]),
-         sg.Input(key='-INaccess11-', size=commonParams[1], enable_events=True)],
+         	sg.Input(key='-INaccess11-', size=commonParams[1], enable_events=True),
+         	sg.Text('Dato mal introducido', key = "-BADINPUT11-", visible =False, size=commonParams[0])],
         [sg.Text('· Material Consumido', size=commonParams[0]),
-         sg.Input(key='-INaccess21-', size=commonParams[1], enable_events=True)],
+         	sg.Input(key='-INaccess21-', size=commonParams[1], enable_events=True),
+         	sg.Text('Dato mal introducido', key = "-BADINPUT21-", visible =False, size=commonParams[0])],
         [sg.Text('· Coste de diseño (Opcional)', size=commonParams[0]),
-         sg.Input(key='-INaccess31-', size=commonParams[1], enable_events=True)],
+         	sg.Input(key='-INaccess31-', size=commonParams[1], enable_events=True),
+         	sg.Text('Dato mal introducido', key = "-BADINPUT31-", visible =False, size=commonParams[0])],
         [sg.Text("")],
         [sg.Checkbox('Activar Opciones de Venta', enable_events=True,
                      key='-CHbox1-', font=commonParams[2])],
@@ -77,13 +81,17 @@ def MainGui():
         (10, 0), (10, 0)), size=(50, 2), font=(commonParams[2]))],
         [sg.Text("· Elige tu impresora", size = commonParams[0]),
 		sg.Combo(values=[element[0] for element in GetThings(cur)], key="-CHOSPRINTER2-",  
-				size = commonParams[1], change_submits=True)],
+				size = commonParams[1], change_submits=True),
+		sg.Button("Editar",key ="-EDITPRINTER2-")],
         [sg.Text('· Tiempo de impresión (H:M)', size=commonParams[0]),
-         sg.Input(key='-INaccess12-', size=commonParams[1], enable_events=True)],
+         	sg.Input(key='-INaccess12-', size=commonParams[1], enable_events=True),
+         	sg.Text('Dato mal introducido', key = "-BADINPUT12-", visible =False, size=commonParams[0])],
         [sg.Text('· Material Consumido', size=commonParams[0]),
-         sg.Input(key='-INaccess22-', size=commonParams[1], enable_events=True)],
+         	sg.Input(key='-INaccess22-', size=commonParams[1], enable_events=True),
+         	sg.Text('Dato mal introducido', key = "-BADINPUT22-", visible =False, size=commonParams[0])],
         [sg.Text('· Coste de diseño (Opcional)', size=commonParams[0]),
-         sg.Input(key='-INaccess32-', size=commonParams[1], enable_events=True)],
+         	sg.Input(key='-INaccess32-', size=commonParams[1], enable_events=True),
+         	sg.Text('Dato mal introducido', key = "-BADINPUT32-", visible =False, size=commonParams[0])],
         [sg.Text("")],
         [sg.Checkbox('Activar Opciones de Venta',
                      enable_events=True, key='-CHbox2-', font=commonParams[2])],
@@ -136,7 +144,13 @@ def MainGui():
 
         if event == f"-INsubmit{layout}-":
 
- 
+            checkTime = TimeValidation(values[f"-INaccess1{layout}-"])
+            if checkTime == False:
+            	window[f"-BADINPUT1{layout}-"].update(visible=True)
+            	continue
+            else:
+            	window[f"-BADINPUT1{layout}-"].update(visible=False)
+            	
             marginSales = ManageSales(MainValidation(values[f"-INaccess4{layout}-"]))
             
             ivaTax = ManageSales(MainValidation(values[f"-INaccess5{layout}-"]))
@@ -144,7 +158,7 @@ def MainGui():
 
             electricityCost = KwCost(RefactorSupport(cur, values[f"-CHOSPRINTER{layout}-"],"KWprinter"),
             			RefactorSupport(cur, values[f"-CHOSPRINTER{layout}-"],"KWprize"),
-            			TimeValidation(values[f"-INaccess1{layout}-"]))
+            			checkTime)
             				
             materialCost = FilamentCost(RefactorSupport(cur,values[f"-CHOSPRINTER{layout}-"],"SpoolCost"), 
             				RefactorSupport(cur,values[f"-CHOSPRINTER{layout}-"],"SpoolWeight"),
@@ -152,7 +166,7 @@ def MainGui():
             				
             amortCost = AmortCost(RefactorSupport(cur,values[f"-CHOSPRINTER{layout}-"],"PrinterCost"), 
             				RefactorSupport(cur,values[f"-CHOSPRINTER{layout}-"],"AmortPrinter"),
-            				TimeValidation(values[f"-INaccess1{layout}-"]))
+            				checkTime)
             				
             designCost = MainValidation(values[f"-INaccess3{layout}-"])
             
@@ -189,7 +203,7 @@ def MainGui():
                 window[f'-COL{layout}-'].update(visible=True)
                 checkSaved = True
                 
-        elif event == "Opciones":
+        elif event == "Opciones" or event == f"-EDITPRINTER{layout}-":
         	PopupOptions(con, cur)
         	window.Element(f"-CHOSPRINTER{2 if layout == 2 else 1}-").update(values=[element[0] for element in GetThings(cur)])
         
