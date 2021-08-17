@@ -6,11 +6,11 @@ from src.handler import MainValidation, TimeValidation
 from src.popups import PopupOptions
 from src.db import CreateCon, SqlConnection, GetThings, PrepareCon
 
-sg.SetOptions(element_padding=((40, 0), (10, 10)))
+#sg.SetOptions(element_padding=((40, 0), (10, 10)))
 
 
 menu_def = [['Archivo', ['Salir']],['Ajustes', ['Opciones']],['Ayuda', ['Acerca de...']]]
-commonParams = [(30, 1), (10, 1), ("Helvetica", 12), (20, 1), (38, 1)]
+commonParams = [(20, 1), (10, 1), ("Helvetica", 12), (38, 1)]
 electricityCost = 0
 materialCost = 0
 ivaTax = 0
@@ -48,66 +48,77 @@ def MainGui():
     con, cur = IntroDB()
     
     layout1 = [[sg.Menu(menu_def, tearoff=True)],
-    	[sg.Text('Introduce los siguientes datos para recibir la estimación:', pad=(
-        (10, 0), (10, 0)), size=(50, 2), font=commonParams[2])],
-        [sg.Text("· Elige tu impresora", size = commonParams[0]),
+	[sg.Text("")],
+        [sg.Column([[sg.Frame("Perfil de impresora",layout=[[
 		sg.Combo(values=[element[0] for element in GetThings(cur)], key="-CHOSPRINTER1-",  
-				size = commonParams[1], change_submits=True),
-		sg.Button("Editar",key ="-EDITPRINTER1-")],
-        [sg.Text('· Tiempo de impresión (H:M)', size=commonParams[0]),
+				size = (33,1), change_submits=True),
+		sg.Button("Editar",key ="-EDITPRINTER1-")]])]], vertical_alignment='center', justification='center')],
+	[sg.Text("")],	
+        [sg.Column([[sg.Frame(title="",layout=[[sg.Text('· Tiempo de impresión', size=commonParams[0]),
+        	sg.Text("(Horas:Minutos)", size=commonParams[0]),
          	sg.Input(key='-INaccess11-', size=commonParams[1], enable_events=True),
          	sg.Text('Dato mal introducido', key = "-BADINPUT11-", visible =False, size=commonParams[0])],
         [sg.Text('· Material Consumido', size=commonParams[0]),
+        	sg.Text("(Gramos)", size=commonParams[0]),
          	sg.Input(key='-INaccess21-', size=commonParams[1], enable_events=True),
          	sg.Text('Dato mal introducido', key = "-BADINPUT21-", visible =False, size=commonParams[0])],
-        [sg.Text('· Coste de diseño (Opcional)', size=commonParams[0]),
+        [sg.Text('· Coste de diseño', size=commonParams[0]),
+        	sg.Text("(Euros)", size=commonParams[0]),
          	sg.Input(key='-INaccess31-', size=commonParams[1], enable_events=True),
-         	sg.Text('Dato mal introducido', key = "-BADINPUT31-", visible =False, size=commonParams[0])],
+         	sg.Text('Dato mal introducido', key = "-BADINPUT31-", visible =False, size=commonParams[0])]])]], 				vertical_alignment='center', justification='center')],
         [sg.Text("")],
         [sg.Checkbox('Activar Opciones de Venta', enable_events=True,
                      key='-CHbox1-', font=commonParams[2])],
-        [Collapse(
-            [[sg.Text("· Margen de Venta (%)", size=commonParams[3]), sg.Input(key='-INaccess41-', size=commonParams[1], 			enable_events=True)],
-             [sg.Text("· Porcentaje de IVA (%)", size=commonParams[3]), sg.Input(key='-INaccess51-', disabled=True, 			size=commonParams[1], enable_events=True),
-              sg.Help("Ayuda", tooltip="Margen de ventas debe ser 0 o superior", key="-Help1-", pad=((5, 0), (0, 0)), 			button_color=("blue"))]], '-Token1-', False)],
+        [sg.Column([[Collapse(
+            [[sg.Text("")],[sg.Text("· Margen de Venta (%)", size=commonParams[0]), sg.Input(key='-INaccess41-', size=commonParams[1], enable_events=True)],
+             [sg.Text("· Porcentaje de IVA (%)", size=commonParams[0]), sg.Input(key='-INaccess51-', disabled=True, 			size=commonParams[1], enable_events=True),
+              sg.Help("Ayuda", tooltip="Margen de ventas debe ser 0 o superior", key="-Help1-", pad=((5, 0), (0, 0)), 			button_color=("blue"))]], '-Token1-', False)]], vertical_alignment='center', justification='center')],
+        [sg.Text("")],
         [sg.HorizontalSeparator(pad=((0, 0), (0, 0)))],
         [sg.Text("")],
-        [sg.Column([[sg.Button("Calcular", font=commonParams[2], key="-INsubmit1-", auto_size_button=True, pad=((0, 0),(0,0))), 		     sg.Button("Reiniciar", key="-Reset1-", font=commonParams[2], pad=((10, 80), (0, 0)))]],
+        [sg.Column([[sg.Button("Calcular", font=commonParams[2], key="-INsubmit1-", auto_size_button=True, pad=((0, 0),(0,0))), 		     sg.Button("Reiniciar", key="-Reset1-", font=commonParams[2], pad=((20, 0), (0, 0)))]],
                      justification ="center")],
+        [sg.Text("")]
     ]
 
     layout2 = [[sg.Menu(menu_def, tearoff=True)],
-    	[sg.Text('Introduce los siguientes datos para recibir la estimación:', pad=(
-        (10, 0), (10, 0)), size=(50, 2), font=(commonParams[2]))],
-        [sg.Text("· Elige tu impresora", size = commonParams[0]),
+	[sg.Text("")],
+	[sg.Column([[sg.Frame("Perfil de impresora",layout=[[
 		sg.Combo(values=[element[0] for element in GetThings(cur)], key="-CHOSPRINTER2-",  
-				size = commonParams[1], change_submits=True),
-		sg.Button("Editar",key ="-EDITPRINTER2-")],
-        [sg.Text('· Tiempo de impresión (H:M)', size=commonParams[0]),
+				size = (33,1), change_submits=True),
+		sg.Button("Editar",key ="-EDITPRINTER2-")]])]], vertical_alignment='center', justification='center')],
+	[sg.Text("")],
+        [sg.Column([[sg.Frame(title="",layout=[[sg.Text('· Tiempo de impresión (H:M)', size=commonParams[0]),
+        	sg.Text("(Horas:Minutos)", size=commonParams[0]),
          	sg.Input(key='-INaccess12-', size=commonParams[1], enable_events=True),
          	sg.Text('Dato mal introducido', key = "-BADINPUT12-", visible =False, size=commonParams[0])],
         [sg.Text('· Material Consumido', size=commonParams[0]),
+        	sg.Text("(Gramos)", size=commonParams[0]),
          	sg.Input(key='-INaccess22-', size=commonParams[1], enable_events=True),
          	sg.Text('Dato mal introducido', key = "-BADINPUT22-", visible =False, size=commonParams[0])],
-        [sg.Text('· Coste de diseño (Opcional)', size=commonParams[0]),
+        [sg.Text('· Coste de diseño', size=commonParams[0]),
+        	sg.Text("(Euros)", size=commonParams[0]),
          	sg.Input(key='-INaccess32-', size=commonParams[1], enable_events=True),
-         	sg.Text('Dato mal introducido', key = "-BADINPUT32-", visible =False, size=commonParams[0])],
+         	sg.Text('Dato mal introducido', key = "-BADINPUT32-", visible =False, size=commonParams[0])]])]], 				vertical_alignment='center', justification='center')],
         [sg.Text("")],
         [sg.Checkbox('Activar Opciones de Venta',
                      enable_events=True, key='-CHbox2-', font=commonParams[2])],
-        [Collapse(
-            [[sg.Text("· Margen de Venta (%)", size=commonParams[3]), sg.Input(key='-INaccess42-', size=commonParams[1], enable_events=True)],
-             [sg.Text("· Porcentaje de IVA (%)", size=commonParams[3]), sg.Input(key='-INaccess52-', size=commonParams[1], enable_events=True),
-              sg.Help("Ayuda", tooltip="Margen de ventas debe ser 0 o superior", key="-Help2-", pad=((5, 0), (0, 0)), button_color=("blue"))]], '-Token2-', False)],
-        [sg.HorizontalSeparator(pad=((0, 40), (0, 0)))],
-        [sg.Text("El coste total es 0 €", key="-Text1-", size=commonParams[4],
-                 font=commonParams[2], justification="center")],
-        [sg.Text(f"El precio de venta es 0 €", key="-Text2-",
-                 size=commonParams[4], font=commonParams[2], justification="center")],
+        
+        [sg.Column([[Collapse(
+            [[sg.Text("")],[sg.Text("· Margen de Venta (%)", size=commonParams[0]), sg.Input(key='-INaccess42-', size=commonParams[1], enable_events=True)],
+             [sg.Text("· Porcentaje de IVA (%)", size=commonParams[0]), sg.Input(key='-INaccess52-', size=commonParams[1], enable_events=True),
+              sg.Help("Ayuda", tooltip="Margen de ventas debe ser 0 o superior", key="-Help2-", pad=((5, 0), (0, 0)), button_color=("blue"))]], '-Token2-', False)]], vertical_alignment='center', justification='center')],
+        [sg.Text("")],
+        [sg.Column([[sg.HorizontalSeparator(pad=((0, 40), (0, 0)))],
+        	[sg.Text("El coste total es 0 €", key="-Text1-", size=commonParams[3],
+                 	font=commonParams[2], justification="center")],
+        	[sg.Text(f"El precio de venta es 0 €", key="-Text2-",
+                 	size=commonParams[3], font=commonParams[2], justification="center")]],vertical_alignment='center', justification='center')],
         [sg.Text("")],
         [sg.Column([[sg.Button("Calcular", font=commonParams[2], key="-INsubmit2-", auto_size_button=True, pad=((0, 0),(0,0))), 
-                     sg.Button("Reiniciar", key="-Reset2-", font=commonParams[2], pad=((10, 80), (0, 0)))]],
+                     sg.Button("Reiniciar", key="-Reset2-", font=commonParams[2], pad=((20, 0), (0, 0)))]],
                      justification ="center")],
+        [sg.Text("")]
     ]
 
     layoutMain = [[sg.Column(layout1, key='-COL1-'),
@@ -141,7 +152,6 @@ def MainGui():
             break
 		
 	
-
         if event == f"-INsubmit{layout}-":
 
             checkTime = TimeValidation(values[f"-INaccess1{layout}-"])
