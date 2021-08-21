@@ -17,7 +17,10 @@ ivaTax = 0
 marginSales = 0
 
 def RefactorSupport(cur, printer, selected):
+try:
     return MainValidation(GetThings(cur,selection=selected, where=["PrinterName", printer])[0][0])
+except IndexError:
+    
 
 def Collapse(layout, key, visible):
     return sg.pin(sg.Column(layout, key=key, visible=visible))
@@ -88,7 +91,7 @@ def MainGui():
 				size = (33,1), change_submits=True),
 		sg.Button("Editar",key ="-EDITPRINTER2-")]])]], vertical_alignment='center', justification='center')],
 	[sg.Text("")],
-        [sg.Column([[sg.Frame(title="",layout=[[sg.Text('· Tiempo de impresión (H:M)', size=commonParams[0]),
+        [sg.Column([[sg.Frame(title="",layout=[[sg.Text('· Tiempo de impresión', size=commonParams[0]),
         	sg.Text("(Horas:Minutos)", size=commonParams[0]),
          	sg.Input(key='-INaccess12-', size=commonParams[1], enable_events=True),
          	sg.Text('Dato mal introducido', key = "-BADINPUT12-", visible =False, size=commonParams[0])],
@@ -157,9 +160,21 @@ def MainGui():
             checkTime = TimeValidation(values[f"-INaccess1{layout}-"])
             if checkTime == False:
             	window[f"-BADINPUT1{layout}-"].update(visible=True)
-            	continue
             else:
             	window[f"-BADINPUT1{layout}-"].update(visible=False)
+            
+            if MainValidation(values[f"-INaccess2{layout}-"])==False:
+            	window[f"-BADINPUT2{layout}-"].update(visible=True)
+            else:
+            	window[f"-BADINPUT2{layout}-"].update(visible=False)
+            	
+            if MainValidation(values[f"-INaccess3{layout}-"])==False:
+            	window[f"-BADINPUT3{layout}-"].update(visible=True)
+            else:
+            	window[f"-BADINPUT3{layout}-"].update(visible=False)
+            	
+            if checkTime==False or MainValidation(values[f"-INaccess2{layout}-"]) == False or MainValidation(values[f"-INaccess3{layout}-"])==False:
+            	continue
             	
             marginSales = ManageSales(MainValidation(values[f"-INaccess4{layout}-"]))
             
