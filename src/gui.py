@@ -19,7 +19,7 @@ marginSales = 0
 def RefactorSupport(cur, printer, selected):
     try:
         return MainValidation(GetThings(cur,selection=selected, where=["PrinterName", printer])[0][0])
-    except IndexError as e:
+    except IndexError:
         raise Exception("Selecciona perfil de impresora válido")
     
 
@@ -27,7 +27,9 @@ def Collapse(layout, key, visible):
     return sg.pin(sg.Column(layout, key=key, visible=visible))
 
 def Reset(window, layout):
-    window[f"-CHOSPRINTER{2 if layout == 2 else 1}-"].update("")
+    window[f"-CHOSPRINTER{layout}-"].update("")
+    window[f"-CHECKINPUTS{layout}-"].update(visible=False)
+    window[f"-CHECKPRINTER{layout}-"].update(visible=False)
     for element in range(1, 5):
         window[f"-INaccess{element}{2 if layout == 2 else 1}-"].update("")
     if layout ==2:
@@ -57,20 +59,18 @@ def MainGui():
 		sg.Combo(values=[element[0] for element in GetThings(cur)], key="-CHOSPRINTER1-",  
 				size = (33,1), change_submits=True),
 		sg.Button("Editar",key ="-EDITPRINTER1-")]])],
-		[sg.Text("Selecciona perfil de impresora válido",key="-CHECKPRINTER1-",visible=False)]], vertical_alignment='center', justification='center')],
+		[sg.Text("Selecciona perfil de impresora válido",justification="center",key="-CHECKPRINTER1-",visible=False)]], vertical_alignment='center', justification='center')],
 	[sg.Text("")],	
         [sg.Column([[sg.Frame(title="",layout=[[sg.Text('· Tiempo de impresión', size=commonParams[0]),
         	sg.Text("(Horas:Minutos)", size=commonParams[0]),
-         	sg.Input(key='-INaccess11-', size=commonParams[1], enable_events=True),
-         	sg.Text('Dato mal introducido', key = "-BADINPUT11-", visible =False, size=commonParams[0])],
+         	sg.Input(key='-INaccess11-', size=commonParams[1], enable_events=True)],
         [sg.Text('· Material Consumido', size=commonParams[0]),
         	sg.Text("(Gramos)", size=commonParams[0]),
-         	sg.Input(key='-INaccess21-', size=commonParams[1], enable_events=True),
-         	sg.Text('Dato mal introducido', key = "-BADINPUT21-", visible =False, size=commonParams[0])],
+         	sg.Input(key='-INaccess21-', size=commonParams[1], enable_events=True)],
         [sg.Text('· Coste de diseño', size=commonParams[0]),
         	sg.Text("(Euros)", size=commonParams[0]),
-         	sg.Input(key='-INaccess31-', size=commonParams[1], enable_events=True),
-         	sg.Text('Dato mal introducido', key = "-BADINPUT31-", visible =False, size=commonParams[0])]])]], 				vertical_alignment='center', justification='center')],
+         	sg.Input(key='-INaccess31-', size=commonParams[1], enable_events=True)]])]], 				vertical_alignment='center', justification='center')],
+        [sg.Text('Dato mal introducido',key="-CHECKINPUTS1-", auto_size_text=True,visible=False, justification='center', size=commonParams[0])],
         [sg.Text("")],
         [sg.Checkbox('Activar Opciones de Venta', enable_events=True,
                      key='-CHbox1-', font=commonParams[2])],
@@ -96,16 +96,14 @@ def MainGui():
 	[sg.Text("")],
         [sg.Column([[sg.Frame(title="",layout=[[sg.Text('· Tiempo de impresión', size=commonParams[0]),
         	sg.Text("(Horas:Minutos)", size=commonParams[0]),
-         	sg.Input(key='-INaccess12-', size=commonParams[1], enable_events=True),
-         	sg.Text('Dato mal introducido', key = "-BADINPUT12-", visible =False, size=commonParams[0])],
+         	sg.Input(key='-INaccess12-', size=commonParams[1], enable_events=True)],
         [sg.Text('· Material Consumido', size=commonParams[0]),
         	sg.Text("(Gramos)", size=commonParams[0]),
-         	sg.Input(key='-INaccess22-', size=commonParams[1], enable_events=True),
-         	sg.Text('Dato mal introducido', key = "-BADINPUT22-", visible =False, size=commonParams[0])],
+         	sg.Input(key='-INaccess22-', size=commonParams[1], enable_events=True)],
         [sg.Text('· Coste de diseño', size=commonParams[0]),
         	sg.Text("(Euros)", size=commonParams[0]),
-         	sg.Input(key='-INaccess32-', size=commonParams[1], enable_events=True),
-         	sg.Text('Dato mal introducido', key = "-BADINPUT32-", visible =False, size=commonParams[0])]])]], 				vertical_alignment='center', justification='center')],
+         	sg.Input(key='-INaccess32-', size=commonParams[1], enable_events=True)]])]], 				vertical_alignment='center', justification='center')],
+        [sg.Text('Dato mal introducido',key="-CHECKINPUTS2-",visible=False, auto_size_text=True,justification='center', size=commonParams[0])],
         [sg.Text("")],
         [sg.Checkbox('Activar Opciones de Venta',
                      enable_events=True, key='-CHbox2-', font=commonParams[2])],
@@ -157,37 +155,44 @@ def MainGui():
         except TypeError:
             break
 		
-	
+	#Al clickar el botón para calcular costes
         if event == f"-INsubmit{layout}-":
 
-            if values[f"-CHOSPRINTER{layout}-"] != " ":
+            '''
+            Evalúa si hay un perfil de impresora seleccionado
+	    '''
+            chosPrinter = ""
+            if values[f"-CHOSPRINTER{layout}-"] == "":
                 window[f"-CHECKPRINTER{layout}-"].update(visible=True)
-                continue
-            elif values[f"-CHOSPRINTER{layout}-"] != " "
-	    '''
-	    Ver como refactorizar esto utilizando un bucle 'FOR'	
-	    Ver como colocar los datos mal introducidos debajo del cuadro de introduccion, detectar error y mostrar
-	    '''
+                chosPrinter = False
+            else:
+            	window[f"-CHECKPRINTER{layout}-"].update(visible=False)
 	   
+	   
+            '''
+            Evalúa si los input introducidos son válidos
+	    '''
+            badInputs = ""
             checkTime = TimeValidation(values[f"-INaccess1{layout}-"])
             if checkTime == False:
-            	window[f"-BADINPUT1{layout}-"].update(visible=True)
+            	badInputs += "Tiempo"
+            elif MainValidation(values[f"-INaccess2{layout}-"])==False:
+            	badInputs += "Material"
+            elif MainValidation(values[f"-INaccess3{layout}-"])==False:
+                badInputs += "Diseño"
+                
+            if badInputs == "":
+                window[f"-CHECKINPUTS{layout}-"].update(visible=False)
             else:
-            	window[f"-BADINPUT1{layout}-"].update(visible=False)
+            	window[f"-CHECKINPUTS{layout}-"].update(value=badInputs+", mala introducción",visible=True)
             
-            if MainValidation(values[f"-INaccess2{layout}-"])==False:
-            	window[f"-BADINPUT2{layout}-"].update(visible=True)
-            else:
-            	window[f"-BADINPUT2{layout}-"].update(visible=False)
-            	
-            if MainValidation(values[f"-INaccess3{layout}-"])==False:
-            	window[f"-BADINPUT3{layout}-"].update(visible=True)
-            else:
-            	window[f"-BADINPUT3{layout}-"].update(visible=False)
-            	
-            if checkTime==False or MainValidation(values[f"-INaccess2{layout}-"]) == False or MainValidation(values[f"-INaccess3{layout}-"])==False:
+            if chosPrinter != "" or badInputs != "":
             	continue
             	
+            
+            '''
+            Envía la información formateada a las funciones de cálculo de costes
+	    '''	
             marginSales = ManageSales(MainValidation(values[f"-INaccess4{layout}-"]))
             
             ivaTax = ManageSales(MainValidation(values[f"-INaccess5{layout}-"]))
@@ -209,6 +214,9 @@ def MainGui():
             
             print(f"--------------\nCoste Electricidad:{electricityCost}\nCoste Material:{materialCost}\nCoste Diseño:{designCost}\nCoste Amortización:{amortCost}\n")
             
+            '''
+            Gestiona la información recibida de las funciones de costes y las muestra
+	    '''
             totalCost = round(electricityCost+materialCost+amortCost+designCost,2)
             salesCost = round((totalCost*marginSales)*ivaTax,2)
             
@@ -220,6 +228,10 @@ def MainGui():
             window["-Text1-"].update(f"El coste total es {totalCost} €")
             window["-Text2-"].update(f"El precio de venta es {salesCost} €")
 
+
+            '''
+            Guarda la información introducida entre cambio de layouts
+            '''
             if checkSaved == False:
                 window[f'-COL{layout}-'].update(visible=False)
 
@@ -239,11 +251,17 @@ def MainGui():
 
                 window[f'-COL{layout}-'].update(visible=True)
                 checkSaved = True
-                
-        elif event == "Opciones" or event == f"-EDITPRINTER{layout}-":
+        
+        '''
+        Redirige al apartado de gestión de perfiles de impresora
+        '''
+        if event == "Opciones" or event == f"-EDITPRINTER{layout}-":
         	PopupOptions(con, cur)
         	window.Element(f"-CHOSPRINTER{2 if layout == 2 else 1}-").update(values=[element[0] for element in GetThings(cur)])
-        
+
+        '''
+        Cierra la ventana
+        '''
         if event == sg.WIN_CLOSED or event =="Salir":
             break
 
