@@ -17,9 +17,10 @@ ivaTax = 0
 marginSales = 0
 
 def RefactorSupport(cur, printer, selected):
-try:
-    return MainValidation(GetThings(cur,selection=selected, where=["PrinterName", printer])[0][0])
-except IndexError:
+    try:
+        return MainValidation(GetThings(cur,selection=selected, where=["PrinterName", printer])[0][0])
+    except IndexError as e:
+        raise Exception("Selecciona perfil de impresora válido")
     
 
 def Collapse(layout, key, visible):
@@ -55,7 +56,8 @@ def MainGui():
         [sg.Column([[sg.Frame("Perfil de impresora",layout=[[
 		sg.Combo(values=[element[0] for element in GetThings(cur)], key="-CHOSPRINTER1-",  
 				size = (33,1), change_submits=True),
-		sg.Button("Editar",key ="-EDITPRINTER1-")]])]], vertical_alignment='center', justification='center')],
+		sg.Button("Editar",key ="-EDITPRINTER1-")]])],
+		[sg.Text("Selecciona perfil de impresora válido",key="-CHECKPRINTER1-",visible=False)]], vertical_alignment='center', justification='center')],
 	[sg.Text("")],	
         [sg.Column([[sg.Frame(title="",layout=[[sg.Text('· Tiempo de impresión', size=commonParams[0]),
         	sg.Text("(Horas:Minutos)", size=commonParams[0]),
@@ -89,7 +91,8 @@ def MainGui():
 	[sg.Column([[sg.Frame("Perfil de impresora",layout=[[
 		sg.Combo(values=[element[0] for element in GetThings(cur)], key="-CHOSPRINTER2-",  
 				size = (33,1), change_submits=True),
-		sg.Button("Editar",key ="-EDITPRINTER2-")]])]], vertical_alignment='center', justification='center')],
+		sg.Button("Editar",key ="-EDITPRINTER2-")],
+		[sg.Text("Selecciona perfil de impresora válido",key="-CHECKPRINTER2-",visible=False)]])]], vertical_alignment='center', justification='center')],
 	[sg.Text("")],
         [sg.Column([[sg.Frame(title="",layout=[[sg.Text('· Tiempo de impresión', size=commonParams[0]),
         	sg.Text("(Horas:Minutos)", size=commonParams[0]),
@@ -157,6 +160,15 @@ def MainGui():
 	
         if event == f"-INsubmit{layout}-":
 
+            if values[f"-CHOSPRINTER{layout}-"] != " ":
+                window[f"-CHECKPRINTER{layout}-"].update(visible=True)
+                continue
+            elif values[f"-CHOSPRINTER{layout}-"] != " "
+	    '''
+	    Ver como refactorizar esto utilizando un bucle 'FOR'	
+	    Ver como colocar los datos mal introducidos debajo del cuadro de introduccion, detectar error y mostrar
+	    '''
+	   
             checkTime = TimeValidation(values[f"-INaccess1{layout}-"])
             if checkTime == False:
             	window[f"-BADINPUT1{layout}-"].update(visible=True)
