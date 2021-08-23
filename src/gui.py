@@ -30,6 +30,7 @@ def Reset(window, layout):
     window[f"-CHOSPRINTER{layout}-"].update("")
     window[f"-COLUMNINPUTS{layout}-"].update(visible=False)
     window[f"-CHECKPRINTER{layout}-"].update(visible=False)
+    window["-OUTPUTPRINT-"].update(value="")
     for element in range(1, 5):
         window[f"-INaccess{element}{2 if layout == 2 else 1}-"].update("")
     if layout ==2:
@@ -69,7 +70,7 @@ def MainGui():
         [sg.Text('· Material Consumido', size=commonParams[0]),
         	sg.Text("(Gramos)", size=commonParams[0]),
          	sg.Input(key='-INaccess21-', size=commonParams[1], enable_events=True)],
-        [sg.Text('· Coste de diseño', size=commonParams[0]),
+        [sg.Text('· Coste de laminado', size=commonParams[0]),
         	sg.Text("(Euros)", size=commonParams[0]),
          	sg.Input(key='-INaccess31-', size=commonParams[1], enable_events=True)]])]], 				vertical_alignment='center', justification='center')],
          	
@@ -104,7 +105,7 @@ def MainGui():
         [sg.Text('· Material Consumido', size=commonParams[0]),
         	sg.Text("(Gramos)", size=commonParams[0]),
          	sg.Input(key='-INaccess22-', size=commonParams[1], enable_events=True)],
-        [sg.Text('· Coste de diseño', size=commonParams[0]),
+        [sg.Text('· Coste de laminado', size=commonParams[0]),
         	sg.Text("(Euros)", size=commonParams[0]),
          	sg.Input(key='-INaccess32-', size=commonParams[1], enable_events=True)]])]], 				vertical_alignment='center', justification='center')],
         [sg.Column([[Collapse([[sg.Text("Dato mal introducido",size=commonParams[3],key="-CHECKINPUTS2-",text_color="red",justification="center")]],"-COLUMNINPUTS2-", False)]], vertical_alignment="center",justification="center")],
@@ -123,6 +124,8 @@ def MainGui():
                  	font=commonParams[2], justification="center")],
         	[sg.Text(f"El precio de venta es 0 €", key="-Text2-",
                  	size=commonParams[3], font=commonParams[2], justification="center")]],vertical_alignment='center', justification='center')],
+        [sg.Text("")],
+        [sg.Column([[sg.Multiline(reroute_stderr=False,autoscroll=True,size=(30,10),key="-OUTPUTPRINT-",reroute_stdout=True, disabled=True)]], justification="center", vertical_alignment="center")],
         [sg.Text("")],
         [sg.Column([[sg.Button("Calcular", font=commonParams[2], key="-INsubmit2-", auto_size_button=True, pad=((0, 0),(0,0))), 
                      sg.Button("Reiniciar", key="-Reset2-", font=commonParams[2], pad=((20, 0), (0, 0)))]],
@@ -183,8 +186,8 @@ def MainGui():
             	badInputs.append("Tiempo")
             if MainValidation(values[f"-INaccess2{layout}-"])==False:
             	badInputs.append("Material")
-            if MainValidation(values[f"-INaccess3{layout}-"])==False:
-                badInputs.append("Diseño")
+            if MainValidation(values[f"-INaccess3{layout}-"])==False and values[f"-INaccess3{layout}-"]!="0":
+                badInputs.append("Laminado")
             if badInputs == []:
                 window[f"-COLUMNINPUTS{layout}-"].update(visible=False)
             else:
@@ -217,7 +220,7 @@ def MainGui():
             				
             designCost = MainValidation(values[f"-INaccess3{layout}-"])
             
-            print(f"--------------\nCoste Electricidad:{electricityCost}\nCoste Material:{materialCost}\nCoste Diseño:{designCost}\nCoste Amortización:{amortCost}\n")
+            print(f"--------------\nCoste Electricidad: {electricityCost}\nCoste Material: {materialCost}\nCoste Laminado: {designCost}\nCoste Amortización: {amortCost}\n")
             
             '''
             Gestiona la información recibida de las funciones de costes y las muestra

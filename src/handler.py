@@ -2,7 +2,7 @@ import re
 import PySimpleGUI as sg
 
 
-#FALTA QUE 0 SEA LEÍDO COMO TRUE
+#FALTA QUE 0 SEA LEÍDO COMO TRUE QUIZÁS. REVISAR PLANTEAMIENTO.
 
 def MainValidation(candidate, result=False):
     '''
@@ -38,9 +38,10 @@ def TimeValidation(candidate, result=False):
             result = (splitHours*60)+splitMinutes
     elif candidate.isdigit() and ":" not in candidate:
         result = MainValidation(candidate)
-        sg.popup_no_buttons("Por favor, introduzca el tiempo según el formato 'Horas:Minutos'.\n\nPara este caso, se ha convertido la cifra introducida a minutos",
-        title="Atención",
-        grab_anywhere=False,
-        auto_close=True,
-        auto_close_duration=3)
+        if candidate!="0":
+            sg.popup_no_buttons("Por favor, introduzca el tiempo según el formato 'Horas:Minutos'.\n\nPara este caso, se ha convertido la cifra introducida a minutos",
+        	title="Atención",
+        	grab_anywhere=False,
+        	auto_close=True,
+        	auto_close_duration=3)
     return result
