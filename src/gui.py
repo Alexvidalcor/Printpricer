@@ -28,7 +28,7 @@ def Collapse(layout, key, visible):
 
 def Reset(window, layout):
     window[f"-CHOSPRINTER{layout}-"].update("")
-    window[f"-CHECKINPUTS{layout}-"].update(visible=False)
+    window[f"-COLUMNINPUTS{layout}-"].update(visible=False)
     window[f"-CHECKPRINTER{layout}-"].update(visible=False)
     for element in range(1, 5):
         window[f"-INaccess{element}{2 if layout == 2 else 1}-"].update("")
@@ -55,11 +55,13 @@ def MainGui():
     
     layout1 = [[sg.Menu(menu_def, tearoff=True)],
 	[sg.Text("")],
-        [sg.Column([[sg.Frame("Perfil de impresora",layout=[[
-		sg.Combo(values=[element[0] for element in GetThings(cur)], key="-CHOSPRINTER1-",  
-				size = (33,1), change_submits=True),
-		sg.Button("Editar",key ="-EDITPRINTER1-")]])],
-		[sg.Text("Selecciona perfil de impresora válido",justification="center",key="-CHECKPRINTER1-",visible=False)]], vertical_alignment='center', justification='center')],
+	
+	[sg.Column([
+		[sg.Frame("Perfil de impresora",layout=[
+			[sg.Combo(values=[element[0] for element in GetThings(cur)], readonly=True, key="-CHOSPRINTER1-",size = (33,1), change_submits=True),sg.Button("Editar",key ="-EDITPRINTER1-")]])]],vertical_alignment='center', justification='center')],
+	
+	 [sg.Column([[Collapse([[sg.Text("Selecciona perfil de impresora válido", auto_size_text=True,text_color="red",justification="center")]],"-CHECKPRINTER1-", False)]], vertical_alignment="center",justification="center")],
+	 
 	[sg.Text("")],	
         [sg.Column([[sg.Frame(title="",layout=[[sg.Text('· Tiempo de impresión', size=commonParams[0]),
         	sg.Text("(Horas:Minutos)", size=commonParams[0]),
@@ -70,7 +72,8 @@ def MainGui():
         [sg.Text('· Coste de diseño', size=commonParams[0]),
         	sg.Text("(Euros)", size=commonParams[0]),
          	sg.Input(key='-INaccess31-', size=commonParams[1], enable_events=True)]])]], 				vertical_alignment='center', justification='center')],
-        [sg.Text('Dato mal introducido',key="-CHECKINPUTS1-", auto_size_text=True,visible=False, justification='center', size=commonParams[0])],
+         	
+        [sg.Column([[Collapse([[sg.Text("Dato mal introducido",key="-CHECKINPUTS1-",size=commonParams[3],text_color="red",justification="center")]],"-COLUMNINPUTS1-", False)]], vertical_alignment="center",justification="center")],
         [sg.Text("")],
         [sg.Checkbox('Activar Opciones de Venta', enable_events=True,
                      key='-CHbox1-', font=commonParams[2])],
@@ -88,11 +91,12 @@ def MainGui():
 
     layout2 = [[sg.Menu(menu_def, tearoff=True)],
 	[sg.Text("")],
-	[sg.Column([[sg.Frame("Perfil de impresora",layout=[[
-		sg.Combo(values=[element[0] for element in GetThings(cur)], key="-CHOSPRINTER2-",  
-				size = (33,1), change_submits=True),
-		sg.Button("Editar",key ="-EDITPRINTER2-")],
-		[sg.Text("Selecciona perfil de impresora válido",key="-CHECKPRINTER2-",visible=False)]])]], vertical_alignment='center', justification='center')],
+	[sg.Column([
+		[sg.Frame("Perfil de impresora",layout=[
+			[sg.Combo(values=[element[0] for element in GetThings(cur)], readonly=True, key="-CHOSPRINTER2-",size = (33,1), change_submits=True),sg.Button("Editar",key ="-EDITPRINTER2-")]])]],vertical_alignment='center', justification='center')],
+				
+	[sg.Column([[Collapse([[sg.Text("Selecciona perfil de impresora válido", auto_size_text=True,text_color="red",justification="center")]],"-CHECKPRINTER2-", False)]], vertical_alignment="center",justification="center")],
+	
 	[sg.Text("")],
         [sg.Column([[sg.Frame(title="",layout=[[sg.Text('· Tiempo de impresión', size=commonParams[0]),
         	sg.Text("(Horas:Minutos)", size=commonParams[0]),
@@ -103,7 +107,7 @@ def MainGui():
         [sg.Text('· Coste de diseño', size=commonParams[0]),
         	sg.Text("(Euros)", size=commonParams[0]),
          	sg.Input(key='-INaccess32-', size=commonParams[1], enable_events=True)]])]], 				vertical_alignment='center', justification='center')],
-        [sg.Text('Dato mal introducido',key="-CHECKINPUTS2-",visible=False, auto_size_text=True,justification='center', size=commonParams[0])],
+        [sg.Column([[Collapse([[sg.Text("Dato mal introducido",size=commonParams[3],key="-CHECKINPUTS2-",text_color="red",justification="center")]],"-COLUMNINPUTS2-", False)]], vertical_alignment="center",justification="center")],
         [sg.Text("")],
         [sg.Checkbox('Activar Opciones de Venta',
                      enable_events=True, key='-CHbox2-', font=commonParams[2])],
@@ -114,6 +118,7 @@ def MainGui():
               sg.Help("Ayuda", tooltip="Margen de ventas debe ser 0 o superior", key="-Help2-", pad=((5, 0), (0, 0)), button_color=("blue"))]], '-Token2-', False)]], vertical_alignment='center', justification='center')],
         [sg.Text("")],
         [sg.Column([[sg.HorizontalSeparator(pad=((0, 40), (0, 0)))],
+        	[sg.Text("")],
         	[sg.Text("El coste total es 0 €", key="-Text1-", size=commonParams[3],
                  	font=commonParams[2], justification="center")],
         	[sg.Text(f"El precio de venta es 0 €", key="-Text2-",
@@ -172,21 +177,21 @@ def MainGui():
             '''
             Evalúa si los input introducidos son válidos
 	    '''
-            badInputs = ""
+            badInputs = []
             checkTime = TimeValidation(values[f"-INaccess1{layout}-"])
-            if checkTime == False:
-            	badInputs += "Tiempo"
-            elif MainValidation(values[f"-INaccess2{layout}-"])==False:
-            	badInputs += "Material"
-            elif MainValidation(values[f"-INaccess3{layout}-"])==False:
-                badInputs += "Diseño"
-                
-            if badInputs == "":
-                window[f"-CHECKINPUTS{layout}-"].update(visible=False)
+            if checkTime==False:
+            	badInputs.append("Tiempo")
+            if MainValidation(values[f"-INaccess2{layout}-"])==False:
+            	badInputs.append("Material")
+            if MainValidation(values[f"-INaccess3{layout}-"])==False:
+                badInputs.append("Diseño")
+            if badInputs == []:
+                window[f"-COLUMNINPUTS{layout}-"].update(visible=False)
             else:
-            	window[f"-CHECKINPUTS{layout}-"].update(value=badInputs+", mala introducción",visible=True)
+            	window[f"-CHECKINPUTS{layout}-"].update(value=", ".join(badInputs)+": mala introducción")
+            	window[f"-COLUMNINPUTS{layout}-"].update(visible=True)
             
-            if chosPrinter != "" or badInputs != "":
+            if chosPrinter != "" or badInputs != []:
             	continue
             	
             

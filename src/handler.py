@@ -1,6 +1,9 @@
 import re
 import PySimpleGUI as sg
 
+
+#FALTA QUE 0 SEA LEÍDO COMO TRUE
+
 def MainValidation(candidate, result=False):
     '''
     Transforma enteros o flotantes en string a int o float
@@ -15,8 +18,7 @@ def MainValidation(candidate, result=False):
         elif candidate.replace(',', "",1).isdigit():
             result = float(candidate.replace(",",".",1))
     elif candidate.isdigit():
-        result = int(candidate)
-
+         result = int(candidate)
     return result
 
 def TimeValidation(candidate, result=False):
@@ -42,4 +44,3 @@ def TimeValidation(candidate, result=False):
         auto_close=True,
         auto_close_duration=3)
     return result
-
