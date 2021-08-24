@@ -1,3 +1,6 @@
 from src.gui import *
-
-MainGui()
+from tkinter import TclError
+try:
+	MainGui()
+except TclError:
+	print("Programa Terminado")

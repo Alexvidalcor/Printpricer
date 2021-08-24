@@ -8,13 +8,16 @@ def FilamentCost(SpoolCost, SpoolWeight, SpoolConsumed):
 	except ZeroDivisionError:
 		return SpoolConsumed
 	
-def KwCost(kwExpense, timePrinting):
-
-	if type(timePrinting) == str:
-		hours = int(re.split(r":[0-5]{1}[0-9]{1}", timePrinting)[0])
-		minutes = int(re.split(r"[0-9]{1,3}:", timePrinting)[1])
-		totalCost = ((hours*60)+minutes)/60
-	else:
-		totalCost = timePrinting/60
+def KwCost(kwPrinter, kwExpense, timePrinting):	
+	return round(timePrinting * (kwPrinter/60 * kwExpense/60),2)
 	
-	return totalCost * kwExpense
+def ManageSales(numberSales):
+	return (numberSales/100 if numberSales else 0)+1
+
+def AmortCost(printerCost, years, timePrinting):
+	#REPLANTEAR FÓRMULA DE AMORTIZACIÓN
+	repairPercent = 0.25
+	dailyHours = 4
+	
+	return round((printerCost/(years*(365*dailyHours*60))+printerCost*repairPercent/(years*(365*dailyHours*60)/4))*timePrinting,2)
+	
