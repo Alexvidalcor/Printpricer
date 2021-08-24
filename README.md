@@ -3,7 +3,7 @@
 
 _Programa que permite calcular costes típicos y precio de venta de un archivo Gcode impreso en 3D_
 
-Ventana inicial         |  Ventana con costes calculados
+Ventana inicial         |  Ventana de perfiles
 :-------------------------:|:-------------------------:
 ![Initial_Window](https://github.com/Alexvidalcor/GCode_CostEstimator/blob/main/Input/ReadmeImage_1.png?raw=true)  |  ![Ending_Window](https://raw.githubusercontent.com/Alexvidalcor/GCode_CostEstimator/main/Input/ReadmeImage_2.png)
 
@@ -26,7 +26,7 @@ _Descargar y ejecutar_
 Ver  apartado **Releases** para descargar el último ejecutable.
 
 
-### Distribución de Linux basado en Debian 
+### Distribución de Linux basada en Debian 
 
 _Pasos a seguir (comandos de terminal):_
 
@@ -35,7 +35,7 @@ git clone https://github.com/Alexvidalcor/GCode_CostEstimator
 
 cd GCode_CostEstimator/
 
-pip3 install pysimplegui
+pip3 install -r requirements.txt
 
 python3 main.py
 ```
