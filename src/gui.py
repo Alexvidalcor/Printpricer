@@ -36,9 +36,7 @@ def Reset(window, layout):
     if layout ==2:
         window[f"-Text1-"].update("El coste total es 0 €")
         window[f"-Text2-"].update("El precio de venta es 0 €")
-<<<<<<< HEAD
-=======
-        
+
 def IntroDB():
 	if exists("db/MainPrinter.db"):
 		print("Database existe")
@@ -51,7 +49,6 @@ def IntroDB():
 		PrepareCon(con, cur, option="insert",
 			values=("ImpresoraTest",0,0,0,0,0,0))
 		return con, cur
->>>>>>> Dev
 
 def MainGui():
 
@@ -185,6 +182,7 @@ def MainGui():
 	    '''
             badInputs = []
             checkTime = TimeValidation(values[f"-INaccess1{layout}-"])
+            print(checkTime)
             if checkTime==False:
             	badInputs.append("Tiempo")
             if MainValidation(values[f"-INaccess2{layout}-"])==False:
@@ -207,7 +205,6 @@ def MainGui():
             marginSales = ManageSales(MainValidation(values[f"-INaccess4{layout}-"]))
             
             ivaTax = ManageSales(MainValidation(values[f"-INaccess5{layout}-"]))
-
 
             electricityCost = KwCost(RefactorSupport(cur, values[f"-CHOSPRINTER{layout}-"],"KWprinter"),
             			RefactorSupport(cur, values[f"-CHOSPRINTER{layout}-"],"KWprize"),

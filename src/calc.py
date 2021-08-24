@@ -8,7 +8,8 @@ def FilamentCost(SpoolCost, SpoolWeight, SpoolConsumed):
 	except ZeroDivisionError:
 		return SpoolConsumed
 	
-def KwCost(kwPrinter, kwExpense, timePrinting):	
+def KwCost(kwPrinter, kwExpense, timePrinting):
+	print(timePrinting)
 	return round(timePrinting * (kwPrinter/60 * kwExpense/60),2)
 	
 def ManageSales(numberSales):

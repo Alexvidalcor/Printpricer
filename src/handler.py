@@ -32,16 +32,11 @@ def TimeValidation(candidate, result=False):
     '''
     
     if re.match(r"[0-9]{1,3}:[0-5]{1}[0-9]{1}", candidate):
-<<<<<<< HEAD
-        result = candidate
-    elif ":" not in candidate:
-=======
         if type(candidate) == str:
             splitHours = int(re.split(r":[0-5]{1}[0-9]{1}", candidate)[0])
             splitMinutes = int(re.split(r"[0-9]{1,3}:", candidate)[1])
             result = (splitHours*60)+splitMinutes
     elif candidate.isdigit() and ":" not in candidate:
->>>>>>> Dev
         result = MainValidation(candidate)
         if candidate!="0":
             sg.popup_no_buttons("Por favor, introduzca el tiempo según el formato 'Horas:Minutos'.\n\nPara este caso, se ha convertido la cifra introducida a minutos",
