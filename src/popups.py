@@ -15,7 +15,7 @@ def PopupDelete(con, cur):
 		[sg.Button("Aceptar", key="-ACEPTARDELETE-", font=commonParams[4], auto_size_button=True)]
 	]
 	
-	window = sg.Window('Estimador', layout)
+	window = sg.Window('Estimador', layout, icon='Input/LogoIcon.ico')
 
 	while True:
 		event, values = window.read()
@@ -78,7 +78,7 @@ def PopupOptions(con, cur):
     layout = [[initLayout],[sg.TabGroup(
         [[sg.Tab('Electricidad', elecLayout)], [sg.Tab('Material', materialLayout)], [sg.Tab('Amortización', amortLayout)]],key='-TABS-')],[sg.Column([[sg.Button("Actualizar", key="-ACTUALIZAR-", font=commonParams[4])]],justification="center")]]
 	
-    window = sg.Window('Perfiles', layout)
+    window = sg.Window('Perfiles', layout, icon='Input/LogoIcon.ico')
 	
     while True:
         event, values = window.read()

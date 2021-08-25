@@ -136,7 +136,7 @@ def MainGui():
     layoutMain = [[sg.Column(layout1, key='-COL1-'),
                    sg.Column(layout2, visible=False, key='-COL2-')]]
 
-    window = sg.Window('Estimador de costes', layoutMain)
+    window = sg.Window('Estimador de costes', layoutMain, icon='Input/LogoIcon.ico')
 
     layout = 1
     opened = False

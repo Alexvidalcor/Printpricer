@@ -3,7 +3,7 @@ from sqlite3 import Error
 
 
 def CreateCon(dbFile):
-	conn = None
+	con=None
 	try:
 		con = sqlite3.connect(dbFile)
 		print("Database creado")
@@ -11,7 +11,7 @@ def CreateCon(dbFile):
 		print(e)
 	finally:
 		if con:
-	    		con.close()
+			con.close()
             
 def PrepareCon(con,cur,values=(), where=[], tableName = "MainPrinter", option="create", closeDB = False):
 
@@ -70,7 +70,7 @@ def PrepareCon(con,cur,values=(), where=[], tableName = "MainPrinter", option="c
 def SqlConnection(routeDB):
     try:
         con = sqlite3.connect(routeDB)
-        cur = con.cursor() 
+        cur = con.cursor()
         cur.execute("SELECT * from MainPrinter WHERE ID=1")
         print("Conexión establecida")
         return con, cur
