@@ -10,7 +10,7 @@ from src.db import CreateCon, SqlConnection, GetThings, PrepareCon
 
 
 menu_def = [['Archivo', ['Salir']],['Ajustes', ['Opciones']],['Ayuda', ['Acerca de...']]]
-commonParams = [(20, 1), (10, 1), ("Helvetica", 12), (38, 1)]
+commonParams = [(20, 1), (10, 1), ("Helvetica", 12), (38, 1),(20,1)]
 electricityCost = 0
 materialCost = 0
 ivaTax = 0
@@ -34,8 +34,8 @@ def Reset(window, layout):
     for element in range(1, 5):
         window[f"-INaccess{element}{2 if layout == 2 else 1}-"].update("")
     if layout ==2:
-        window[f"-Text1-"].update("El coste total es 0 €")
-        window[f"-Text2-"].update("El precio de venta es 0 €")
+        window[f"-Text1-"].update("Coste total ----> 0 €")
+        window[f"-Text2-"].update("Precio venta --> 0 €")
 
 def IntroDB():
 	if exists("db/MainPrinter.db"):
@@ -118,14 +118,15 @@ def MainGui():
              [sg.Text("· Porcentaje de IVA (%)", size=commonParams[0]), sg.Input(key='-INaccess52-', size=commonParams[1], enable_events=True),
               sg.Help("Ayuda", tooltip="Margen de ventas debe ser 0 o superior", key="-Help2-", pad=((5, 0), (0, 0)), button_color=("blue"))]], '-Token2-', False)]], vertical_alignment='center', justification='center')],
         [sg.Text("")],
-        [sg.Column([[sg.HorizontalSeparator(pad=((0, 40), (0, 0)))],
-        	[sg.Text("")],
-        	[sg.Text("El coste total es 0 €", key="-Text1-", size=commonParams[3],
-                 	font=commonParams[2], justification="center")],
-        	[sg.Text(f"El precio de venta es 0 €", key="-Text2-",
-                 	size=commonParams[3], font=commonParams[2], justification="center")]],vertical_alignment='center', justification='center')],
+        [sg.HorizontalSeparator()],
         [sg.Text("")],
-        [sg.Column([[sg.Multiline(reroute_stderr=False,autoscroll=True,size=(30,10),key="-OUTPUTPRINT-",reroute_stdout=True, disabled=True)]], justification="center", vertical_alignment="center")],
+        [sg.Column([
+        	[sg.Text("Coste total ----> 0 €", key="-Text1-", size=commonParams[4],
+                 	font=commonParams[2], justification="left")],
+        	[sg.Text(f"Precio venta --> 0 €", key="-Text2-",
+                 	size=commonParams[4], font=commonParams[2], justification="left")]],vertical_alignment='left', justification='left'),sg.VerticalSeparator(pad=((20,75),(0,0))), sg.Column([[sg.Multiline(reroute_stderr=False,autoscroll=True,size=(20,10),key="-OUTPUTPRINT-",reroute_stdout=True, disabled=True)]], justification="right", vertical_alignment="center")],
+        [sg.Text("")],
+        [sg.HorizontalSeparator(pad=((0,0), (0,0)))],
         [sg.Text("")],
         [sg.Column([[sg.Button("Calcular", font=commonParams[2], key="-INsubmit2-", auto_size_button=True, pad=((0, 0),(0,0))), 
                      sg.Button("Reiniciar", key="-Reset2-", font=commonParams[2], pad=((20, 0), (0, 0)))]],
@@ -233,8 +234,8 @@ def MainGui():
             print(f"Margen de venta: {marginCostPrint}\nCoste IVA: {ivaCostPrint}\n--------------")
 	
 
-            window["-Text1-"].update(f"El coste total es {totalCost} €")
-            window["-Text2-"].update(f"El precio de venta es {salesCost} €")
+            window["-Text1-"].update(f"Coste total ----> {totalCost} €")
+            window["-Text2-"].update(f"Precio venta --> {salesCost} €")
 
 
             '''
