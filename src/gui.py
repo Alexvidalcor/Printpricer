@@ -10,7 +10,7 @@ from src.db import CreateCon, SqlConnection, GetThings, PrepareCon
 
 
 menu_def = [['Archivo', ['Salir']],['Ajustes', ['Opciones']],['Ayuda', ['Acerca de...']]]
-commonParams = [(20, 1), (10, 1), ("Helvetica", 12), (38, 1),(20,1)]
+commonParams = [(20, 1), (10, 1), ("Helvetica", 12), (38, 1),(17,1),("Helvetica", 14)]
 electricityCost = 0
 materialCost = 0
 ivaTax = 0
@@ -34,8 +34,8 @@ def Reset(window, layout):
     for element in range(1, 5):
         window[f"-INaccess{element}{2 if layout == 2 else 1}-"].update("")
     if layout ==2:
-        window[f"-Text1-"].update("Coste total ----> 0 €")
-        window[f"-Text2-"].update("Precio venta --> 0 €")
+        window[f"-Text1-"].update("0 €")
+        window[f"-Text2-"].update("0 €")
 
 def IntroDB():
 	if exists("db/MainPrinter.db"):
@@ -121,10 +121,16 @@ def MainGui():
         [sg.HorizontalSeparator()],
         [sg.Text("")],
         [sg.Column([
-        	[sg.Text("Coste total ----> 0 €", key="-Text1-", size=commonParams[4],
-                 	font=commonParams[2], justification="left")],
-        	[sg.Text(f"Precio venta --> 0 €", key="-Text2-",
-                 	size=commonParams[4], font=commonParams[2], justification="left")]],vertical_alignment='left', justification='left'),sg.VerticalSeparator(pad=((20,75),(0,0))), sg.Column([[sg.Multiline(reroute_stderr=False,autoscroll=True,size=(20,10),key="-OUTPUTPRINT-",reroute_stdout=True, disabled=True)]], justification="right", vertical_alignment="center")],
+        	[sg.Column([[sg.Text("Coste Total", size=commonParams[4],justification="center",font=commonParams[2])]], justification="center")],
+        	[sg.Column([[sg.Text("0 €",text_color="orange", key="-Text1-", size=commonParams[4],
+                 	font=commonParams[5], justification="center")]], justification="center")],
+                [sg.Text("")],
+        	[sg.HorizontalSeparator()],
+        	[sg.Text("")],
+                [sg.Column([[sg.Text("Precio Venta", size=commonParams[4],justification="center",font=commonParams[2])]], justification="center")],
+        	[sg.Column([[sg.Text("0 €",text_color="orange", key="-Text2-", size=commonParams[4],
+                 	font=commonParams[5], justification="center")]], justification="center")]]),
+        	sg.VerticalSeparator(pad=((0,50),(0,0))), 								  sg.Column([[sg.Multiline(reroute_stderr=False,autoscroll=True,size=(20,10),key="-OUTPUTPRINT-",reroute_stdout=True, disabled=True)]], justification="center", vertical_alignment="center")],
         [sg.Text("")],
         [sg.HorizontalSeparator(pad=((0,0), (0,0)))],
         [sg.Text("")],
@@ -183,7 +189,6 @@ def MainGui():
 	    '''
             badInputs = []
             checkTime = TimeValidation(values[f"-INaccess1{layout}-"])
-            print(checkTime)
             if checkTime==False:
             	badInputs.append("Tiempo")
             if MainValidation(values[f"-INaccess2{layout}-"])==False:
@@ -234,8 +239,8 @@ def MainGui():
             print(f"Margen de venta: {marginCostPrint}\nCoste IVA: {ivaCostPrint}\n--------------")
 	
 
-            window["-Text1-"].update(f"Coste total ----> {totalCost} €")
-            window["-Text2-"].update(f"Precio venta --> {salesCost} €")
+            window["-Text1-"].update(f"{totalCost} €")
+            window["-Text2-"].update(f"{salesCost} €")
 
 
             '''
