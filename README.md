@@ -23,7 +23,7 @@ Histórico de estimaciones  |  En desarrollo
 
 _Descargar y ejecutar_
 
-Ver  apartado **Releases** para descargar el último ejecutable.
+Ver  apartado [Releases](https://github.com/Alexvidalcor/GCode_CostEstimator/releases) para descargar el último ejecutable.
 
 
 ### Distribución de Linux basada en Debian 

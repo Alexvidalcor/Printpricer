@@ -31,7 +31,7 @@ def TimeValidation(candidate, result=False):
     Si se introduce cualquier cosa no planteada, devuelve False
     '''
     
-    if re.match(r"[0-9]{1,3}:[0-5]{1}[0-9]{1}", candidate):
+    if re.fullmatch(r"[0-9]{1,3}:[0-5]{1}[0-9]{1}", candidate):
         if type(candidate) == str:
             splitHours = int(re.split(r":[0-5]{1}[0-9]{1}", candidate)[0])
             splitMinutes = int(re.split(r"[0-9]{1,3}:", candidate)[1])

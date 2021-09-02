@@ -5,4 +5,8 @@ __pycache__/
 *.ipynb
 test.py
 WindowsRelease.py
+<<<<<<< HEAD
 MainPrinter.db
+=======
+MainPrinter.db
+>>>>>>> c3d719ba19314df8b3abef4d51565220afe3e113

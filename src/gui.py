@@ -10,7 +10,7 @@ from src.db import CreateCon, SqlConnection, GetThings, PrepareCon
 
 
 menu_def = [['Archivo', ['Salir']],['Ajustes', ['Opciones']],['Ayuda', ['Acerca de...']]]
-commonParams = [(20, 1), (10, 1), ("Helvetica", 12), (38, 1)]
+commonParams = [(20, 1), (10, 1), ("Helvetica", 12), (38, 1),(17,1),("Helvetica", 14)]
 electricityCost = 0
 materialCost = 0
 ivaTax = 0
@@ -34,8 +34,8 @@ def Reset(window, layout):
     for element in range(1, 5):
         window[f"-INaccess{element}{2 if layout == 2 else 1}-"].update("")
     if layout ==2:
-        window[f"-Text1-"].update("El coste total es 0 €")
-        window[f"-Text2-"].update("El precio de venta es 0 €")
+        window[f"-Text1-"].update("0 €")
+        window[f"-Text2-"].update("0 €")
 
 def IntroDB():
 	if exists("db/MainPrinter.db"):
@@ -47,7 +47,7 @@ def IntroDB():
 		CreateCon("db/MainPrinter.db")
 		con, cur = SqlConnection("db/MainPrinter.db")
 		PrepareCon(con, cur, option="insert",
-			values=("ImpresoraTest",0,0,0,0,0,0))
+			values=("ImpresoraTest",0.25,120,300,4,20,1000))
 		return con, cur
 
 def MainGui():
@@ -55,15 +55,13 @@ def MainGui():
     con, cur = IntroDB()
     
     layout1 = [[sg.Menu(menu_def, tearoff=True)],
-	[sg.Text("")],
-	
+
 	[sg.Column([
 		[sg.Frame("Perfil de impresora",layout=[
 			[sg.Combo(values=[element[0] for element in GetThings(cur)], readonly=True, key="-CHOSPRINTER1-",size = (33,1), change_submits=True),sg.Button("Editar",key ="-EDITPRINTER1-")]])]],vertical_alignment='center', justification='center')],
 	
 	 [sg.Column([[Collapse([[sg.Text("Selecciona perfil de impresora válido", auto_size_text=True,text_color="red",justification="center")]],"-CHECKPRINTER1-", False)]], vertical_alignment="center",justification="center")],
-	 
-	[sg.Text("")],	
+
         [sg.Column([[sg.Frame(title="",layout=[[sg.Text('· Tiempo de impresión', size=commonParams[0]),
         	sg.Text("(Horas:Minutos)", size=commonParams[0]),
          	sg.Input(key='-INaccess11-', size=commonParams[1], enable_events=True)],
@@ -75,30 +73,28 @@ def MainGui():
          	sg.Input(key='-INaccess31-', size=commonParams[1], enable_events=True)]])]], 				vertical_alignment='center', justification='center')],
          	
         [sg.Column([[Collapse([[sg.Text("Dato mal introducido",key="-CHECKINPUTS1-",size=commonParams[3],text_color="red",justification="center")]],"-COLUMNINPUTS1-", False)]], vertical_alignment="center",justification="center")],
-        [sg.Text("")],
         [sg.Checkbox('Activar Opciones de Venta', enable_events=True,
                      key='-CHbox1-', font=commonParams[2])],
         [sg.Column([[Collapse(
-            [[sg.Text("")],[sg.Text("· Margen de Venta (%)", size=commonParams[0]), sg.Input(key='-INaccess41-', size=commonParams[1], enable_events=True)],
+            [[sg.Text("· Margen de Venta (%)", size=commonParams[0]), sg.Input(key='-INaccess41-', size=commonParams[1], enable_events=True)],
              [sg.Text("· Porcentaje de IVA (%)", size=commonParams[0]), sg.Input(key='-INaccess51-', disabled=True, 			size=commonParams[1], enable_events=True),
               sg.Help("Ayuda", tooltip="Margen de ventas debe ser 0 o superior", key="-Help1-", pad=((5, 0), (0, 0)), 			button_color=("blue"))]], '-Token1-', False)]], vertical_alignment='center', justification='center')],
-        [sg.Text("")],
+        
         [sg.HorizontalSeparator(pad=((0, 0), (0, 0)))],
         [sg.Text("")],
         [sg.Column([[sg.Button("Calcular", font=commonParams[2], key="-INsubmit1-", auto_size_button=True, pad=((0, 0),(0,0))), 		     sg.Button("Reiniciar", key="-Reset1-", font=commonParams[2], pad=((20, 0), (0, 0)))]],
                      justification ="center")],
-        [sg.Text("")]
+        
     ]
 
     layout2 = [[sg.Menu(menu_def, tearoff=True)],
-	[sg.Text("")],
+	
 	[sg.Column([
 		[sg.Frame("Perfil de impresora",layout=[
 			[sg.Combo(values=[element[0] for element in GetThings(cur)], readonly=True, key="-CHOSPRINTER2-",size = (33,1), change_submits=True),sg.Button("Editar",key ="-EDITPRINTER2-")]])]],vertical_alignment='center', justification='center')],
 				
 	[sg.Column([[Collapse([[sg.Text("Selecciona perfil de impresora válido", auto_size_text=True,text_color="red",justification="center")]],"-CHECKPRINTER2-", False)]], vertical_alignment="center",justification="center")],
 	
-	[sg.Text("")],
         [sg.Column([[sg.Frame(title="",layout=[[sg.Text('· Tiempo de impresión', size=commonParams[0]),
         	sg.Text("(Horas:Minutos)", size=commonParams[0]),
          	sg.Input(key='-INaccess12-', size=commonParams[1], enable_events=True)],
@@ -109,28 +105,34 @@ def MainGui():
         	sg.Text("(Euros)", size=commonParams[0]),
          	sg.Input(key='-INaccess32-', size=commonParams[1], enable_events=True)]])]], 				vertical_alignment='center', justification='center')],
         [sg.Column([[Collapse([[sg.Text("Dato mal introducido",size=commonParams[3],key="-CHECKINPUTS2-",text_color="red",justification="center")]],"-COLUMNINPUTS2-", False)]], vertical_alignment="center",justification="center")],
-        [sg.Text("")],
         [sg.Checkbox('Activar Opciones de Venta',
                      enable_events=True, key='-CHbox2-', font=commonParams[2])],
         
         [sg.Column([[Collapse(
-            [[sg.Text("")],[sg.Text("· Margen de Venta (%)", size=commonParams[0]), sg.Input(key='-INaccess42-', size=commonParams[1], enable_events=True)],
+            [[sg.Text("· Margen de Venta (%)", size=commonParams[0]), sg.Input(key='-INaccess42-', size=commonParams[1], enable_events=True)],
              [sg.Text("· Porcentaje de IVA (%)", size=commonParams[0]), sg.Input(key='-INaccess52-', size=commonParams[1], enable_events=True),
               sg.Help("Ayuda", tooltip="Margen de ventas debe ser 0 o superior", key="-Help2-", pad=((5, 0), (0, 0)), button_color=("blue"))]], '-Token2-', False)]], vertical_alignment='center', justification='center')],
         [sg.Text("")],
-        [sg.Column([[sg.HorizontalSeparator(pad=((0, 40), (0, 0)))],
-        	[sg.Text("")],
-        	[sg.Text("El coste total es 0 €", key="-Text1-", size=commonParams[3],
-                 	font=commonParams[2], justification="center")],
-        	[sg.Text(f"El precio de venta es 0 €", key="-Text2-",
-                 	size=commonParams[3], font=commonParams[2], justification="center")]],vertical_alignment='center', justification='center')],
-        [sg.Text("")],
-        [sg.Column([[sg.Multiline(reroute_stderr=False,autoscroll=True,size=(30,10),key="-OUTPUTPRINT-",reroute_stdout=True, disabled=True)]], justification="center", vertical_alignment="center")],
+        [sg.HorizontalSeparator()],
+      
+        [sg.Column([
+        	[sg.Column([[sg.Text("Coste Total", size=commonParams[4],justification="center",font=commonParams[2])]], justification="center")],
+        	[sg.Column([[sg.Text("0 €",text_color="orange", key="-Text1-", size=commonParams[4],
+                 	font=commonParams[5], justification="center")]], justification="center")],
+            [sg.HorizontalSeparator(pad=((0,0), (5,5)))],
+            [sg.Column([[sg.Text("Precio Venta", size=commonParams[4],justification="center",font=commonParams[2])]], justification="center")],
+        	[sg.Column([[sg.Text("0 €",text_color="orange", key="-Text2-", size=commonParams[4],
+                 	font=commonParams[5], justification="center")]], justification="center")]],justification="center"),
+        	sg.VerticalSeparator(pad=((0,20),(0,0))),
+            sg.Column([[sg.Multiline(reroute_stderr=False,autoscroll=True,size=(22,9),key="-OUTPUTPRINT-",reroute_stdout=True, disabled=True)]], justification="center", vertical_alignment="center")],
+            
+    
+        [sg.HorizontalSeparator(pad=((0,0), (0,0)))],
         [sg.Text("")],
         [sg.Column([[sg.Button("Calcular", font=commonParams[2], key="-INsubmit2-", auto_size_button=True, pad=((0, 0),(0,0))), 
                      sg.Button("Reiniciar", key="-Reset2-", font=commonParams[2], pad=((20, 0), (0, 0)))]],
                      justification ="center")],
-        [sg.Text("")]
+      
     ]
 
     layoutMain = [[sg.Column(layout1, key='-COL1-'),
@@ -182,7 +184,6 @@ def MainGui():
 	    '''
             badInputs = []
             checkTime = TimeValidation(values[f"-INaccess1{layout}-"])
-            print(checkTime)
             if checkTime==False:
             	badInputs.append("Tiempo")
             if MainValidation(values[f"-INaccess2{layout}-"])==False:
@@ -233,8 +234,8 @@ def MainGui():
             print(f"Margen de venta: {marginCostPrint}\nCoste IVA: {ivaCostPrint}\n--------------")
 	
 
-            window["-Text1-"].update(f"El coste total es {totalCost} €")
-            window["-Text2-"].update(f"El precio de venta es {salesCost} €")
+            window["-Text1-"].update(f"{totalCost} €")
+            window["-Text2-"].update(f"{salesCost} €")
 
 
             '''
@@ -253,7 +254,7 @@ def MainGui():
                 window[f"-CHOSPRINTER{2 if layout == 2 else 1}-"].update(
                         values[f"-CHOSPRINTER{1 if layout == 2 else 2}-"])
 
-                for element in range(1, 5):
+                for element in range(1, 6):
                     window[f"-INaccess{element}{2 if layout == 2 else 1}-"].update(
                         values[f"-INaccess{element}{1 if layout == 2 else 2}-"])
 

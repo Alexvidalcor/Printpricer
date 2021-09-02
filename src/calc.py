@@ -9,7 +9,6 @@ def FilamentCost(SpoolCost, SpoolWeight, SpoolConsumed):
 		return SpoolConsumed
 	
 def KwCost(kwPrinter, kwExpense, timePrinting):
-	print(timePrinting)
 	return round(timePrinting * (kwPrinter/60 * kwExpense/60),2)
 	
 def ManageSales(numberSales):
