@@ -31,7 +31,7 @@ def Reset(window, layout):
     window[f"-COLUMNINPUTS{layout}-"].update(visible=False)
     window[f"-CHECKPRINTER{layout}-"].update(visible=False)
     window["-OUTPUTPRINT-"].update(value="")
-    for element in range(1, 5):
+    for element in range(1, 6):
         window[f"-INaccess{element}{2 if layout == 2 else 1}-"].update("")
     if layout ==2:
         window[f"-Text1-"].update("0 €")
