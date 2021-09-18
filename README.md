@@ -5,7 +5,7 @@ _Programa que permite calcular costes típicos y precio de venta de un archivo G
 
 Ventana inicial         |  Ventana de perfiles
 :-------------------------:|:-------------------------:
-![Initial_Window](https://github.com/Alexvidalcor/GCode_CostEstimator/blob/main/Input/ReadmeImage_1.png?raw=true)  |  ![Ending_Window](https://raw.githubusercontent.com/Alexvidalcor/GCode_CostEstimator/main/Input/ReadmeImage_2.png)
+![Initial_Window](https://github.com/Alexvidalcor/GCode_CostEstimator/blob/main/input/ReadmeImage_1.png?raw=true)  |  ![Ending_Window](https://raw.githubusercontent.com/Alexvidalcor/GCode_CostEstimator/main/input/ReadmeImage_2.png)
 
 
 ## Estado del proyecto ⚙️
