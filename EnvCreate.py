@@ -46,7 +46,7 @@ def CreateEnv(foundOS,passUser,envName ="MainEnv"):
 
 
 if __name__ == "__main__":
-    envName = input("Introduce nombre del entorno a crear: ")
+    #envName = input("Introduce nombre del entorno a crear: ")
     passUser = getpass.getpass("Introduce tu contraseña root: ")
     foundOS = CheckOS()
-    envManaged = CreateEnv(foundOS.lower(), passUser, envName = envName)
+    envManaged = CreateEnv(foundOS.lower(), passUser)
