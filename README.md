@@ -33,6 +33,7 @@ _Pasos a seguir (comandos de terminal):_
 ```
 git clone https://github.com/Alexvidalcor/GCode_CostEstimator
 cd GCode_CostEstimator/
+sleep 2
 python3 EnvCreate.py
 python3 main.py
 ```
