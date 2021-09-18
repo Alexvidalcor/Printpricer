@@ -13,7 +13,7 @@ try:
     no_titlebar = True,
     grab_anywhere = False,
     keep_on_top = True,
-    image = "Input/LogoStart.png")
+    image = "input/LogoStart.png")
 
 	MainGui()
 except TclError:

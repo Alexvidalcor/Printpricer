@@ -1,4 +1,5 @@
 import PySimpleGUI as sg
+from os import mkdir
 from os.path import exists
 
 from src.calc import FilamentCost, KwCost, ManageSales, AmortCost
@@ -39,17 +40,27 @@ def Reset(window, layout):
 
 def IntroDB():
     
-	if exists("db/MainPrinter.db"):
-		print("Database existe")
-		con, cur = SqlConnection("db/MainPrinter.db")
-		return con, cur
-	else:
-		print("Database no existe")
-		CreateCon("db/MainPrinter.db")
-		con, cur = SqlConnection("db/MainPrinter.db")
-		PrepareCon(con, cur, option="insert",
-			values=("ImpresoraTest",0.25,120,300,4,20,1000))
-		return con, cur
+    try:
+        path = "db/"
+        if exists(path):
+            print(f"Carpeta {path} encontrada")
+        else:
+            mkdir(path)
+            print (f"Creada carpeta {path}")
+    except OSError:
+        print (f"Creación de carpeta {path} falló")
+        
+    if exists("db/MainPrinter.db"):
+        print("Database existe")
+        con, cur = SqlConnection("db/MainPrinter.db")
+        return con, cur
+    else:
+        print("Database no existe")
+        CreateCon("db/MainPrinter.db")
+        con, cur = SqlConnection("db/MainPrinter.db")
+        PrepareCon(con, cur, option="insert",
+            values=("ImpresoraTest",0.25,120,300,4,20,1000))
+        return con, cur
 
 def MainGui():
 
@@ -57,11 +68,11 @@ def MainGui():
     
     layout1 = [[sg.Menu(menu_def, tearoff=True)],
 
-	[sg.Column([
-		[sg.Frame("Perfil de impresora",layout=[
-			[sg.Combo(values=[element[0] for element in GetThings(cur)], readonly=True, key="-CHOSPRINTER1-",size = (33,1), change_submits=True),sg.Button("Editar",key ="-EDITPRINTER1-")]])]],vertical_alignment='center', justification='center')],
-	
-	 [sg.Column([[Collapse([[sg.Text("Selecciona perfil de impresora válido", auto_size_text=True,text_color="red",justification="center")]],"-CHECKPRINTER1-", False)]], vertical_alignment="center",justification="center")],
+    [sg.Column([
+        [sg.Frame("Perfil de impresora",layout=[
+            [sg.Combo(values=[element[0] for element in GetThings(cur)], readonly=True, key="-CHOSPRINTER1-",size = (33,1), change_submits=True),sg.Button("Editar",key ="-EDITPRINTER1-")]])]],vertical_alignment='center', justification='center')],
+    
+     [sg.Column([[Collapse([[sg.Text("Selecciona perfil de impresora válido", auto_size_text=True,text_color="red",justification="center")]],"-CHECKPRINTER1-", False)]], vertical_alignment="center",justification="center")],
 
         [sg.Column([[sg.Frame(title="",layout=[[sg.Text('· Tiempo de impresión', size=commonParams[0]),
         	sg.Text("(Horas:Minutos)", size=commonParams[0]),
@@ -89,13 +100,13 @@ def MainGui():
     ]
 
     layout2 = [[sg.Menu(menu_def, tearoff=True)],
-	
-	[sg.Column([
-		[sg.Frame("Perfil de impresora",layout=[
-			[sg.Combo(values=[element[0] for element in GetThings(cur)], readonly=True, key="-CHOSPRINTER2-",size = (33,1), change_submits=True),sg.Button("Editar",key ="-EDITPRINTER2-")]])]],vertical_alignment='center', justification='center')],
-				
-	[sg.Column([[Collapse([[sg.Text("Selecciona perfil de impresora válido", auto_size_text=True,text_color="red",justification="center")]],"-CHECKPRINTER2-", False)]], vertical_alignment="center",justification="center")],
-	
+    
+    [sg.Column([
+        [sg.Frame("Perfil de impresora",layout=[
+            [sg.Combo(values=[element[0] for element in GetThings(cur)], readonly=True, key="-CHOSPRINTER2-",size = (33,1), change_submits=True),sg.Button("Editar",key ="-EDITPRINTER2-")]])]],vertical_alignment='center', justification='center')],
+                
+    [sg.Column([[Collapse([[sg.Text("Selecciona perfil de impresora válido", auto_size_text=True,text_color="red",justification="center")]],"-CHECKPRINTER2-", False)]], vertical_alignment="center",justification="center")],
+    
         [sg.Column([[sg.Frame(title="",layout=[[sg.Text('· Tiempo de impresión', size=commonParams[0]),
         	sg.Text("(Horas:Minutos)", size=commonParams[0]),
          	sg.Input(key='-INaccess12-', size=commonParams[1], enable_events=True)],
@@ -139,7 +150,7 @@ def MainGui():
     layoutMain = [[sg.Column(layout1, key='-COL1-'),
                    sg.Column(layout2, visible=False, key='-COL2-')]]
 
-    window = sg.Window('Estimador de costes', layoutMain, icon='Input/LogoIcon.ico')
+    window = sg.Window('Estimador de costes', layoutMain, icon='input/LogoIcon.ico')
 
     layout = 1
     opened = False
@@ -165,24 +176,24 @@ def MainGui():
                 window[f"-INaccess5{layout}-"].update(disabled=False)
         except TypeError:
             break
-		
-	#Al clickar el botón para calcular costes
+        
+    #Al clickar el botón para calcular costes
         if event == f"-INsubmit{layout}-":
 
             '''
             Evalúa si hay un perfil de impresora seleccionado
-	    '''
+        '''
             chosPrinter = ""
             if values[f"-CHOSPRINTER{layout}-"] == "":
                 window[f"-CHECKPRINTER{layout}-"].update(visible=True)
                 chosPrinter = False
             else:
             	window[f"-CHECKPRINTER{layout}-"].update(visible=False)
-	   
-	   
+       
+       
             '''
             Evalúa si los input introducidos son válidos
-	    '''
+        '''
             badInputs = []
             checkTime = TimeValidation(values[f"-INaccess1{layout}-"])
             if checkTime==False:
@@ -203,7 +214,7 @@ def MainGui():
             
             '''
             Envía la información formateada a las funciones de cálculo de costes
-	    '''	
+        '''	
             marginSales = ManageSales(MainValidation(values[f"-INaccess4{layout}-"]))
             
             ivaTax = ManageSales(MainValidation(values[f"-INaccess5{layout}-"]))
@@ -226,14 +237,14 @@ def MainGui():
             
             '''
             Gestiona la información recibida de las funciones de costes y las muestra
-	    '''
+        '''
             totalCost = round(electricityCost+materialCost+amortCost+designCost,2)
             salesCost = round((totalCost*marginSales)*ivaTax,2)
             
             marginCostPrint = abs(round(totalCost*(marginSales-1),2))
             ivaCostPrint = abs(round(salesCost-totalCost-totalCost*(marginSales-1),2))
             print(f"Margen de venta: {marginCostPrint}\nCoste IVA: {ivaCostPrint}\n--------------")
-	
+    
 
             window["-Text1-"].update(f"{totalCost} €")
             window["-Text2-"].update(f"{salesCost} €")
@@ -276,6 +287,7 @@ def MainGui():
             break
 
     window.close()
+
 
 
 
