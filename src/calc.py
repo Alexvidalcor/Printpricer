@@ -3,7 +3,7 @@ import re
 
 def FilamentCost(SpoolCost, SpoolWeight, SpoolConsumed):
 	try:
-		return (SpoolCost/SpoolWeight)*SpoolConsumed
+		return round((SpoolCost/SpoolWeight)*SpoolConsumed,2)
 
 	except ZeroDivisionError:
 		return SpoolConsumed

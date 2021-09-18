@@ -38,6 +38,7 @@ def Reset(window, layout):
         window[f"-Text2-"].update("0 €")
 
 def IntroDB():
+    
 	if exists("db/MainPrinter.db"):
 		print("Database existe")
 		con, cur = SqlConnection("db/MainPrinter.db")

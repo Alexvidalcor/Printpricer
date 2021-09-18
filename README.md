@@ -35,7 +35,7 @@ git clone https://github.com/Alexvidalcor/GCode_CostEstimator
 
 cd GCode_CostEstimator/
 
-pip3 install -r requirements.txt
+python3 EnvCreate.py
 
 python3 main.py
 ```
