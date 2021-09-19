@@ -33,9 +33,8 @@ _Pasos a seguir (comandos de terminal):_
 ```
 git clone https://github.com/Alexvidalcor/GCode_CostEstimator
 cd GCode_CostEstimator/
-python3 src/env.py
-source MainEnv/bin/activate
-python3 main.py
+python3 src/install.py
+./execute.sh
 ```
 
 
