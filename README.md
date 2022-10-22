@@ -21,7 +21,7 @@ Histórico de estimaciones  |  En desarrollo
 
 ### Windows 
 
-_Descargar y ejecutar_
+_Descargar y ejecutar:_
 
 Ver  apartado [Releases](https://github.com/Alexvidalcor/GCode_CostEstimator/releases) para descargar el último ejecutable.
 
