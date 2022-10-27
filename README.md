@@ -48,6 +48,5 @@ python3 src/install.py
 
 Este proyecto está bajo la Licencia (GNU GPL-V3) - mira el archivo [LICENSE.md](LICENSE.md) para detalles.
 
-
 ---
 ⌨️ con ❤️ por [Alexvidalcor](https://github.com/Alexvidalcor) 😊
