@@ -2,15 +2,15 @@
 
 _Program that allows to calculate typical costs and sale price of a 3D printed Gcode file_
 
-Initial window | profiles window
-:-------------------------:|:--------------------- ----:
-![Initial_Window](https://github.com/Alexvidalcor/GCode_CostEstimator/blob/main/input/ReadmeImage_1.png?raw=true) | ![Ending_Window](https://raw.githubusercontent.com/Alexvidalcor/GCode_CostEstimator/main/input/ReadmeImage_2.png)
+Main window        |  Profile window
+:-------------------------:|:-------------------------:
+![Initial_Window](https://github.com/Alexvidalcor/GCode_CostEstimator/blob/main/input/ReadmeImage_1.png?raw=true)  |  ![Ending_Window](https://raw.githubusercontent.com/Alexvidalcor/GCode_CostEstimator/main/input/ReadmeImage_2.png)
 
 
 ## Project status ⚙️
 
 Services | State
-:-------------------------:|:--------------------- ----:
+:-------------------------:|:-------------------------:
 Total costs | okay
 Sale prices | okay
 Historical estimates | Developing
