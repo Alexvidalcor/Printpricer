@@ -4,7 +4,7 @@ _Program that allows to calculate typical costs and sale price of a 3D printed G
 
 Main window        |  Profile window
 :-------------------------:|:-------------------------:
-![Initial_Window](https://github.com/Alexvidalcor/GCode_CostEstimator/blob/main/input/ReadmeImage_1.png?raw=true)  |  ![Ending_Window](https://raw.githubusercontent.com/Alexvidalcor/GCode_CostEstimator/main/input/ReadmeImage_2.png)
+![Initial_Window](https://github.com/Alexvidalcor/Printpricer/blob/main/input/ReadmeImage_1.png?raw=true)  |  ![Ending_Window](https://raw.githubusercontent.com/Alexvidalcor/Printpricer/main/input/ReadmeImage_2.png)
 
 
 ## Project status ⚙️
@@ -22,7 +22,7 @@ Historical estimates | Developing
 
 _Download and run:_
 
-See section [Releases](https://github.com/Alexvidalcor/GCode_CostEstimator/releases) to download the latest executable.
+See section [Releases](https://github.com/Alexvidalcor/Printpricer/releases) to download the latest executable.
 
 
 ### Debian-based Linux distribution
@@ -30,8 +30,8 @@ See section [Releases](https://github.com/Alexvidalcor/GCode_CostEstimator/relea
 _Steps to follow (terminal commands):_
 
 ```
-git clone https://github.com/Alexvidalcor/GCode_CostEstimator
-cd GCode_CostEstimator/
+git clone https://github.com/Alexvidalcor/Printpricer
+cd Printpricer/
 python3 src/install.py
 ./execute.sh
 ```
