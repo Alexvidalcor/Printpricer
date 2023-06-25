@@ -1,34 +1,33 @@
-
 # GCode CostEstimator
 
-_Programa que permite calcular costes típicos y precio de venta de un archivo Gcode impreso en 3D_
+_Program that allows to calculate typical costs and sale price of a 3D printed Gcode file_
 
-Ventana inicial         |  Ventana de perfiles
-:-------------------------:|:-------------------------:
-![Initial_Window](https://github.com/Alexvidalcor/GCode_CostEstimator/blob/main/input/ReadmeImage_1.png?raw=true)  |  ![Ending_Window](https://raw.githubusercontent.com/Alexvidalcor/GCode_CostEstimator/main/input/ReadmeImage_2.png)
-
-
-## Estado del proyecto ⚙️
-
-Servicios          |  Estado
-:-------------------------:|:-------------------------:
-Costes totales  |  OK
-Precios de venta  |  OK
-Histórico de estimaciones  |  En desarrollo
+Initial window | profiles window
+:-------------------------:|:--------------------- ----:
+![Initial_Window](https://github.com/Alexvidalcor/GCode_CostEstimator/blob/main/input/ReadmeImage_1.png?raw=true) | ![Ending_Window](https://raw.githubusercontent.com/Alexvidalcor/GCode_CostEstimator/main/input/ReadmeImage_2.png)
 
 
-## Ejecución del programa 🚀
+## Project status ⚙️
 
-### Windows 
+Services | State
+:-------------------------:|:--------------------- ----:
+Total costs | okay
+Sale prices | okay
+Historical estimates | Developing
 
-_Descargar y ejecutar:_
 
-Ver  apartado [Releases](https://github.com/Alexvidalcor/GCode_CostEstimator/releases) para descargar el último ejecutable.
+## Execution of the program 🚀
+
+### Windows
+
+_Download and run:_
+
+See section [Releases](https://github.com/Alexvidalcor/GCode_CostEstimator/releases) to download the latest executable.
 
 
-### Distribución de Linux basada en Debian 
+### Debian-based Linux distribution
 
-_Pasos a seguir (comandos de terminal):_
+_Steps to follow (terminal commands):_
 
 ```
 git clone https://github.com/Alexvidalcor/GCode_CostEstimator
@@ -38,15 +37,15 @@ python3 src/install.py
 ```
 
 
-## Construido con 🛠️
+## Built with 🛠️
 
 * [SQLite3](https://www.sqlite.org/index.html) - SQL database engine
 * [PySimpleGui](https://pysimplegui.readthedocs.io/en/latest/) - Python GUI For Humans.
 
 
-## Licencia 📄
+## License 📄
 
-Este proyecto está bajo la Licencia (GNU GPL-V3) - mira el archivo [LICENSE.md](LICENSE.md) para detalles.
+This project is licensed under the License (GNU GPL-V3) - see the [LICENSE.md](LICENSE.md) file for details.
 
 ---
-⌨️ con ❤️ por [Alexvidalcor](https://github.com/Alexvidalcor) 😊
+⌨️ with ❤️ by [Alexvidalcor](https://github.com/Alexvidalcor) 😊
