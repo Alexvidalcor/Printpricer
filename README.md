@@ -1,4 +1,4 @@
-# GCode CostEstimator
+# Printpricer
 
 _Program that allows to calculate typical costs and sale price of a 3D printed Gcode file_
 
